@@ -31,11 +31,11 @@ public class Servlet3Filter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
-        MessageUtil.onTime("执行过滤操作" + ((HttpServletRequest)request).getRequestURI());
+        MessageUtil.onTime("执行过滤操作" + ((HttpServletRequest) request).getRequestURI());
         chain.doFilter(new MyRequest((HttpServletRequest) request), response);
 //        AsyncContext context = request.getAsyncContext();
 //        context.setTimeout(30000);
-        MessageUtil.onTime("执行过滤操作后" + ((HttpServletRequest)request).getRequestURI());
+        MessageUtil.onTime("执行过滤操作后" + ((HttpServletRequest) request).getRequestURI());
     }
 
     @Override

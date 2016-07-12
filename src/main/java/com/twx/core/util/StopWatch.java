@@ -7,7 +7,7 @@ import java.time.Clock;
  */
 public final class StopWatch {
     private long start;
-    private Clock clock = Clock.systemUTC();
+    private final Clock clock = Clock.systemUTC();
 
     public StopWatch() {
         reset();

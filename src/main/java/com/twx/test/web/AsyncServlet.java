@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by vincent.tong on 2016/6/28.
  */
-@WebServlet(urlPatterns="/demo", asyncSupported=true)
+@WebServlet(urlPatterns = "/demo", asyncSupported = true)
 public class AsyncServlet extends HttpServlet {
     private static final long serialVersionUID = -8016328059808092454L;
 
@@ -30,27 +30,7 @@ public class AsyncServlet extends HttpServlet {
 
         //在子线程中执行业务调用，并由其负责输出响应，主线程退出
         AsyncContext ctx = req.startAsync(req, resp);
-        ctx.addListener(new AsyncListener() {
-            @Override
-            public void onComplete(AsyncEvent event) throws IOException {
-                MessageUtil.onTime("here on complete:");
-            }
-
-            @Override
-            public void onTimeout(AsyncEvent event) throws IOException {
-                MessageUtil.onTime("here on timeout:");
-            }
-
-            @Override
-            public void onError(AsyncEvent event) throws IOException {
-                MessageUtil.onTime("here on error:");
-            }
-
-            @Override
-            public void onStartAsync(AsyncEvent event) throws IOException {
-                MessageUtil.onTime("here on startAsync:");
-            }
-        });
+        ctx.addListener(new MyAsyncListener("AsyncServlet"));
         //ctx = req.startAsync(req, resp); // 此处不能再调用startAsync了，因为在同一个dispatch中
         ctx.setTimeout(20000);
         ctx.start(new Work(ctx)); // 如果没有调用这个方法，那么异步操作，会等到超时的时候结束异步周期。
@@ -62,7 +42,7 @@ public class AsyncServlet extends HttpServlet {
 }
 
 class Work extends Thread {
-    private AsyncContext context;
+    private final AsyncContext context;
 
     public Work(AsyncContext context) {
         this.context = context;
@@ -88,6 +68,34 @@ class Work extends Thread {
         } catch (IOException e) {
 
         }
+    }
+}
+
+class MyAsyncListener implements AsyncListener {
+    private final String version;
+
+    public MyAsyncListener(String version) {
+        this.version = version;
+    }
+
+    @Override
+    public void onComplete(AsyncEvent event) throws IOException {
+        MessageUtil.onTime("here " + version + " on complete:");
+    }
+
+    @Override
+    public void onTimeout(AsyncEvent event) throws IOException {
+        MessageUtil.onTime("here " + version + " on timeout:");
+    }
+
+    @Override
+    public void onError(AsyncEvent event) throws IOException {
+        MessageUtil.onTime("here " + version + " on error:");
+    }
+
+    @Override
+    public void onStartAsync(AsyncEvent event) throws IOException {
+        MessageUtil.onTime("here " + version + " on startAsync:");
     }
 }
 

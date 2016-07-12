@@ -23,7 +23,7 @@ public class LongRunningServlet extends HttpServlet {
             + Thread.currentThread().getId());
 
         String time = request.getParameter("time");
-        int secs = Integer.valueOf(time);
+        int secs = Integer.parseInt(time);
         // max 10 seconds
         if (secs > 10000)
             secs = 10000;

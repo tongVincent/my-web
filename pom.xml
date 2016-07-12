@@ -15,9 +15,12 @@
         <project.build.targetJDK>1.8</project.build.targetJDK>
         <project.build.time>${maven.build.timestamp}</project.build.time>
 
-        <plugin.checkstyle.version>2.9.1</plugin.checkstyle.version>
-        <plugin.pmd.version>3.0.1</plugin.pmd.version>
-        <plugin.findbugs.version>2.5.2</plugin.findbugs.version>
+        <!-- 2.9.1版本对内部类的有一些bug，新版本2.17没有问题了 -->
+        <plugin.checkstyle.version>2.17</plugin.checkstyle.version>
+        <!-- 3.0.1不支持Java8，改用新版本 -->
+        <plugin.pmd.version>3.6</plugin.pmd.version>
+        <!-- 2.5.2不支持Java8，改用新版本 -->
+        <plugin.findbugs.version>3.0.4</plugin.findbugs.version>
 
         <mysql.version>5.1.6</mysql.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
@@ -255,6 +258,48 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <packagingExcludes>
+                        **/node_modules/**,
+                        **/.sass-cache/**,
+                        **/sass/**,
+                        **/scss/**,
+                        **/.jshintrc,
+                        **/gulpfile.js,
+                        **/package.json,
+                        **/assets/css/**,
+                        **/assets/js/**,
+                        **/assets/img/**,
+                        **/assets/fonts/**
+                    </packagingExcludes>
+                    <useCache>true</useCache>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>exploded</goal>
+                        </goals>
+                        <configuration>
+                            <webResources>
+                                <resource>
+                                    <directory>src/main/webapp</directory>
+                                    <includes>
+                                        <include>**/*.css</include>
+                                        <include>**/*.js</include>
+                                    </includes>
+                                </resource>
+                            </webResources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
