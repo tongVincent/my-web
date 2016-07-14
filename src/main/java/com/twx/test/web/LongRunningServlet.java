@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by vincent.tong on 2016/6/28.
  */
-@WebServlet("/LongRunningServlet")
+@WebServlet("/test/LongRunningServlet")
 public class LongRunningServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

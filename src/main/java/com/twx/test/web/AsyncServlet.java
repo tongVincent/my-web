@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by vincent.tong on 2016/6/28.
  */
-@WebServlet(urlPatterns = "/demo", asyncSupported = true)
+@WebServlet(urlPatterns = "/test/demo", asyncSupported = true)
 public class AsyncServlet extends HttpServlet {
     private static final long serialVersionUID = -8016328059808092454L;
 

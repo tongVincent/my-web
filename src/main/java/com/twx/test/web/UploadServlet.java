@@ -18,7 +18,7 @@ import javax.servlet.http.Part;
 /**
  * Created by vincent.tong on 2016/7/6.
  */
-@WebServlet(urlPatterns = "/upload", asyncSupported = true)
+@WebServlet(urlPatterns = "/test/upload", asyncSupported = true)
 @MultipartConfig
 public class UploadServlet extends HttpServlet {
     @Override

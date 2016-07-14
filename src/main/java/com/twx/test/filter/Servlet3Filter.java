@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 // 1）对于异步请求，filter的dispatcherTypes 必须要包含DispatcherType.ASYNC，
 //    这样通过AsyncContext.dispatch方法分派的请求，就可以通过该filter了。
 // 2）如果在service方法中需要启动异步周期的，那么该请求经过的filters和最后的servlet，都必须设置asyncSupported = true。
-@WebFilter(filterName = "Servlet3Filter", urlPatterns = "/*", asyncSupported = true, dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.ASYNC})
+@WebFilter(filterName = "Servlet3Filter", urlPatterns = "/test/*", asyncSupported = true, dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.ASYNC})
 public class Servlet3Filter implements Filter {
 
     @Override
