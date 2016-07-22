@@ -10,7 +10,7 @@ import java.util.Objects;
  * Created by vincent.tong on 2016/7/14.
  * 此类的目的是用来分类，每个元素可以是任意值，但在比较的时候，2个此类对象的每个元素的类型必须是一样。
  * 特别是数值的时候，建议用封装类。
- * 此处，把所有数值都转换成BigDecimal来处理
+ * 此处，把所有数值都转换成BigDecimal来处理，且对精度为6位的四舍五入处理
  */
 public class Category {
     private Object[] elements;
@@ -81,7 +81,7 @@ public class Category {
 
             boolean eq = Objects.equals(e1, e2);
             if (!eq && e1 instanceof BigDecimal && e2 instanceof BigDecimal) {
-                eq = ((BigDecimal) e1).compareTo((BigDecimal) e2) == 0;
+                eq = BigDecimalUtil.equals((BigDecimal) e1, (BigDecimal) e2);
             }
 
             if (!eq) {
