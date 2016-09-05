@@ -1,18 +1,27 @@
 package com.twx;
 
 import com.twx.test.util.MessageUtil;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
+import java.util.Collections;
 
 /**
  * Created by vincent.tong on 2016/7/14.
  */
 public class MyTest {
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void test001() {
@@ -152,5 +161,42 @@ public class MyTest {
     public void test010() {
         byte b = (byte) 0x90;
         MessageUtil.onTime((b & (byte) 0xc0) == (byte) 0x80);
+    }
+
+    /**
+     * switch里的表达式的值不能是null
+     */
+    @Test
+    public void test011() {
+        thrown.expect(NullPointerException.class);
+        String i = null;
+        switch (i) {
+            case "1":
+                MessageUtil.onTime("1");
+            default:
+                MessageUtil.onTime("null");
+        }
+    }
+
+    @Test
+    public void test012() {
+        MessageUtil.onTime("".substring(0, 0));
+    }
+
+    @Test
+    public void test013() {
+        String str = null;
+        MessageUtil.onTime(Collections.singletonList("df"));
+        MessageUtil.onTime(Collections.singletonList(null).isEmpty());
+    }
+
+    // 列出指定目录下的所有子目录
+    @Test
+    public void test015() throws IOException {
+        String directory = "D:\\fuzhou";
+        Files.list(Paths.get(directory))
+            .filter(Files::isDirectory)
+            .map(path -> path.getName(path.getNameCount() - 1))
+            .forEach(pathName -> System.out.println("cd " + pathName + "\n" + "git pull\ncd ..\n"));
     }
 }
