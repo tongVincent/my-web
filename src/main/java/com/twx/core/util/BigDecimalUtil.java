@@ -45,12 +45,12 @@ public class BigDecimalUtil {
         return getOrElse(left).multiply(getOrElse(right));
     }
 
-    // 指定精度的误差内，2个指是否相同。默认精度是6位小数
+    // 指定精度的误差内，2个值是否相同。默认精度是6位小数
     public static boolean equals(BigDecimal left, BigDecimal right) {
         return equals(left, right, 6);
     }
 
-    // 指定精度的误差内，2个指是否相同。
+    // 指定精度的误差内，2个值是否相同。
     public static boolean equals(BigDecimal left, BigDecimal right, int scale) {
         if (left != null && right != null) {
             BigDecimal l = round(left, scale);
