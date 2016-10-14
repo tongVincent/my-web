@@ -522,21 +522,20 @@ lst.with {
 println "25、测试DOMCategory的XML解析"
 document = DOMBuilder.parse(getClass().getResource("/languages.xml").newReader()) // 解析xml文件获取document节点
 
-rootElement = document.documentElement // 通过document节点获取其根元素的节点
+languages = document.documentElement // 通过document节点获取其根元素的节点
 
 use(DOMCategory) {
     println 'Languages and authors'
     // 获取某节点下的所有节点的方法，或节点的属性，
-    // 就像访问对象属性一样的有3种方式：rootElement['language']、rootElement.'language'、rootElement.language
+    // 就像访问对象属性一样的有3种方式：languages['language']、languages.'language'、languages.language
     // 只是属性的访问，需要在属性名前加上@
     // 对于节点集合，又可以像数组或List那样用索引访问
-    languages = rootElement['language']
-    languages.each { language ->
+    languages['language'].each { language ->
         println "${language.'@name'} authored by ${language.author[0].text()}"
     }
 
     def languagesByAuthor = { authorName ->
-        languages.findAll { it.author[0].text() == authorName }.collect { it.'@name' }.join(', ')
+        languages.language.findAll { it.author[0].text() == authorName }.collect { it.'@name' }.join(', ')
     }
 
     println "languages by Wirth:" + languagesByAuthor('Wirth')
@@ -545,12 +544,38 @@ use(DOMCategory) {
 
 // 26、测试XMLParser的XML解析
 println "26、测试XMLParser的XML解析"
+languages = new XmlParser().parse(getClass().getResource("/languages.xml").newReader())
+println 'Languages and authors'
+// 节点的访问和属性的访问同使用DOMCategory一样
+languages.each {
+    println "${it.'@name'} authored by ${it.author[0].text()}"
+}
+// 这2种写法是一样的
+println '另外的写法：Languages and authors'
+languages.language.each {
+    println "${it.'@name'} authored by ${it.author[0].text()}"
+}
+
+def languagesByAuthor = { authorName ->
+    languages.findAll { it.author[0].text() == authorName }.collect { it.'@name' }.join(', ')
+}
+
+println "languages by Wirth:" + languagesByAuthor('Wirth')
 
 
 
-// 27、测试XMLSlurper的XML解析
-println "27、测试XMLSlurper的XML解析"
+// 27、测试XMLSlurper的XML解析，parse方法解析得到的是根节点
+println "27、测试XMLSlurper的XML解析，parse方法解析得到的是根节点"
+languages = new XmlSlurper().parse(getClass().getResource("/computerAndNaturalLanguages.xml").newReader())
+        .declareNamespace(human:'http://www.twx.test.com.cn/Natural')
 
+print "Languages:"
+println languages.language.collect { it.@name}.join(', ')
+print "根节点本身:"
+println languages.collect { it.@name}.join(', ')
+
+print "Natural languages:"
+println languages.'human:language'.collect { it.@name}.join(', ')
 
 
 

@@ -1,5 +1,6 @@
 package com.twx.core.util;
 
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -37,5 +38,9 @@ public abstract class StringUtil {
             result.add(new String(bytes, begin, end - begin, CharacterEncodings.CHARSET_UTF_8));
         }
         return result;
+    }
+
+    public static String format(String pattern, Object... arguments) {
+        return MessageFormatter.arrayFormat(pattern, arguments).getMessage();
     }
 }

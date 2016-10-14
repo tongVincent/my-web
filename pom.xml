@@ -34,6 +34,10 @@
         <jackson.version>2.8.1</jackson.version>
         <jackson.module.version>2.7.6</jackson.module.version>
 
+        <logback.version>1.1.7</logback.version>
+        <log4j.version>1.7.21</log4j.version>
+        <jdk.log.version>1.7.10</jdk.log.version>
+
     </properties>
 
     <!-- spring3.0以后，使用Spring官方maven仓库下载依赖 -->
@@ -106,11 +110,37 @@
             <version>2.3.19</version>
         </dependency>
 
+        <!-- 日志 下面的各种日志框架声明，会各自拉取需要的依赖 begin -->
+
+        <!-- logback日志 begin -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <!-- logback日志 end -->
+
+        <!-- log4j日志 begin -->
+        <!--
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.2</version>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${log4j.version}</version>
         </dependency>
+        -->
+        <!-- log4j日志 end -->
+
+        <!-- jdklog日志 begin -->
+        <!--
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${jdk.log.version}</version>
+        </dependency>
+        -->
+        <!-- jdklog日志 end -->
+
+        <!-- 日志 end -->
 
         <dependency>
             <groupId>javax.el</groupId>

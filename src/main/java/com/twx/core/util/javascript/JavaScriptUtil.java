@@ -1,5 +1,7 @@
 package com.twx.core.util.javascript;
 
+import com.twx.core.util.StringUtil;
+import com.twx.core.util.json.JSONBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -38,12 +40,12 @@ public class JavaScriptUtil {
         return getScriptEngine(params, null);
     }
 
-    public static ScriptEngine getScriptEngine(Map<String, Object> params, BiFunction<ScriptEngine, Map.Entry<String, Object>, Object> function) {
+    public static ScriptEngine getScriptEngine(Map<String, Object> params, BiFunction<ScriptEngine, Map.Entry<String, Object>, Object> converter) {
         ScriptEngine engine = getScriptEngine();
         LOGGER.info("设置js引擎参数begin");
         if (!CollectionUtils.isEmpty(params)) {
             params.entrySet().forEach(entry ->
-                    engine.put(entry.getKey(), function == null ? entry.getValue() : function.apply(engine, entry))
+                    engine.put(entry.getKey(), converter == null ? entry.getValue() : converter.apply(engine, entry))
             );
         }
         LOGGER.info("设置js引擎参数end");
@@ -56,5 +58,29 @@ public class JavaScriptUtil {
         ScriptEngine engine = manager.getEngineByName("js");
         LOGGER.info("获取js引擎end");
         return engine;
+    }
+
+    /**
+     * 目前ScriptEngine不支持与java的Map的相互交换
+     * java的Map在js中只能像在java中那样访问，不能用js的Map的访问方式。
+     * js的Map映射到java中的jdk.nashorn.api.scripting.ScriptObjectMirror，此类不能自己创建。但此类实现了Map接口
+     *
+     * 下面的方法是把java中的Map转换成js中的Map
+     * @param engine
+     * @param entry
+     * @return
+     */
+    public static Object supportMapConverter(ScriptEngine engine, Map.Entry<String, Object> entry) {
+        if (entry.getValue() instanceof Map) {
+            final String script = "JSON.parse({})";
+            engine.put(entry.getKey(), JSONBinder.binder(Object.class).toJSON(entry.getValue()));
+            try {
+                return engine.eval(StringUtil.format(script, entry.getKey()));
+            } catch (ScriptException e) {
+                LOGGER.error("转换Java的Map到JavaScript的Map的过程中出错了", e);
+                throw new RuntimeException("转换Java的Map到JavaScript的Map的过程中出错了", e);
+            }
+        }
+        return entry.getValue();
     }
 }
