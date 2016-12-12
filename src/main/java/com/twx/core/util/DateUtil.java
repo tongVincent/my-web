@@ -7,7 +7,7 @@ import java.util.TimeZone;
 /**
  * Created by vincent.tong on 2016/10/12.
  */
-public final class DateUtils {
+public abstract class DateUtil {
     public static Date date(int year, int month, int day) {
         return date(year, month, day, 0, 0, 0);
     }
@@ -109,8 +109,5 @@ public final class DateUtils {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
-    }
-
-    private DateUtils() {
     }
 }

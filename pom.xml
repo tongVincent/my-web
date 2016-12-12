@@ -22,7 +22,10 @@
         <!-- 2.5.2不支持Java8，改用新版本 -->
         <plugin.findbugs.version>3.0.4</plugin.findbugs.version>
 
-        <mysql.version>5.1.6</mysql.version>
+        <!-- 当驱动与MySQL的版本不符合的时候会报如下错误：
+        MySQL server version for the right syntax to use near 'OPTION SQL_SELECT_LIMIT=DEFAULT' at line 1
+        故修改驱动版本 -->
+        <mysql.version>6.0.3</mysql.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
         <javax.servlet.version>3.1.0</javax.servlet.version>
         <spring.version>4.1.5.RELEASE</spring.version>
@@ -247,14 +250,15 @@
             <version>${hsqldb.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- test jar end -->
 
+        <!-- Gson的引用 begin -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.2.4</version>
-            <scope>test</scope>
         </dependency>
-        <!-- test jar end -->
+        <!-- Gson的引用 end -->
 
         <!-- Jackson的引用 begin -->
         <dependency>

@@ -14,7 +14,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 /**
  * Created by vincent.tong on 2016/10/12.
  */
-public final class Convert {
+public abstract class Convert {
     public static final String DATE_FORMAT_DATE = "MM/dd/yyyy";
     public static final String DATE_FORMAT_DATETIME = "MM/dd/yyyy'T'HH:mm:ss";
     public static final String DATA_FORMAT_DATETIME_SLASH = "yyyy-MM-dd HH:mm:ss";
@@ -103,7 +103,7 @@ public final class Convert {
             throw new IllegalStateException(e);
         }
         XMLGregorianCalendar result = factory.newXMLGregorianCalendar();
-        Calendar calendar = DateUtils.calendar(date);
+        Calendar calendar = DateUtil.calendar(date);
         result.setYear(calendar.get(Calendar.YEAR));
         result.setMonth(calendar.get(Calendar.MONTH) + 1);
         result.setDay(calendar.get(Calendar.DAY_OF_MONTH));
@@ -119,8 +119,5 @@ public final class Convert {
         } catch (IllegalArgumentException e) {
             return defaultValue;
         }
-    }
-
-    private Convert() {
     }
 }

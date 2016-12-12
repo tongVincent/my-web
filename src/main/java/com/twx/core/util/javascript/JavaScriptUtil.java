@@ -15,7 +15,7 @@ import javax.script.ScriptException;
 /**
  * Created by vincent.tong on 2016/10/12.
  */
-public class JavaScriptUtil {
+public abstract class JavaScriptUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(JavaScriptUtil.class);
 
     public static Object eval(String script) {

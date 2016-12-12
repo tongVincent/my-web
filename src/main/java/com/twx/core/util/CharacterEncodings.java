@@ -5,7 +5,7 @@ import java.nio.charset.Charset;
 /**
  * Created by vincent.tong on 2016/7/22.
  */
-public class CharacterEncodings {
+public abstract class CharacterEncodings {
     public static final String UTF_8 = "UTF-8";
 
     public static final Charset CHARSET_UTF_8 = Charset.forName(UTF_8);

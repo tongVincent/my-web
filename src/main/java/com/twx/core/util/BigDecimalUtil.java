@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * Created by vincent.tong on 2016/7/21.
  */
-public class BigDecimalUtil {
+public abstract class BigDecimalUtil {
     public static BigDecimal getOrElse(Double d) {
         return getOrElse(d, BigDecimal.ZERO);
     }

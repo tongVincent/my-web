@@ -16,6 +16,9 @@ import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 /**
  * Created by vincent.tong on 2016/7/14.
@@ -292,6 +295,32 @@ public class MyTest {
         MessageUtil.onTime(MyTest.B.class);
         MessageUtil.onTime(super.toString());
         MessageUtil.onTime(MyTest.super.toString());
+    }
+
+    @Test
+    public void test021() {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("groovy");
+        MessageUtil.onTime("Calling script from Java");
+        try {
+            engine.eval("println 'hello from Groovy'");
+        } catch (ScriptException ex) {
+            MessageUtil.onTime(ex);
+        }
+    }
+
+    @Test
+    public void test022() {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("groovy");
+        try {
+            engine.put("name", "Venkat");
+            engine.eval("println \"Hello ${name} from Groovy\"; name += '!' ");
+            String name = (String) engine.get("name");
+            System.out.println("Back in Java:" + name);
+        } catch (ScriptException ex) {
+            MessageUtil.onTime(ex);
+        }
     }
 
     @Override
