@@ -1,7 +1,11 @@
-package com.twx.test.groovy
+//groovy脚本，是不需要存在包名的。
+//存在包名，一般不会影响脚本的执行。
+//但DataSet需要源码，存在包名会影响DataSet的使用。
+
 import groovy.transform.Canonical
 import groovy.transform.Immutable
 import groovy.xml.DOMBuilder
+import groovy.xml.StreamingMarkupBuilder
 import groovy.xml.dom.DOMCategory
 
 import java.util.regex.Matcher
@@ -579,21 +583,361 @@ println languages.'human:language'.collect { it.@name}.join(', ')
 
 
 
-// 28、
-println "28、"
+// 28、测试简单创建XML
+println "28、测试简单创建XML"
+langs = ['C++' : 'Stroustrup', 'Java' : 'Gosling', 'Lisp' : 'McCarthy']
+
+content = ''
+langs.each { language, author ->
+    fragment = """
+    <language name="${language}">
+        <author>${author}</author>
+    </language>
+"""
+
+    content += fragment
+}
+xml = "<languages>${content}</languages>"
+println xml
 
 
 
-// 29、
-println "29、"
+// 29、测试StreamingMarkupBuilder生成xml
+println "29、测试StreamingMarkupBuilder生成xml"
+xmlDocument = new StreamingMarkupBuilder().bind {
+    // mkp是该生成器支持的属性
+    mkp.xmlDeclaration()
+    mkp.declareNamespace(computer: "Computer")
+    languages {
+        comment << "Created using StreamingMarkupBuilder"
+        langs.each { key, value ->
+            computer.language(name: key) {
+                author (value)
+            }
+        }
+    }
+}
+println xmlDocument
 
 
 
-// 30、
-println "30、"
+// 30、测试数据库相关
+println "30、测试数据库相关"
+// 当MySQL的驱动版本是6.0以上的时候，驱动就会自动加载。
+// Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
+// 所以下面在6.0以上也可以用，但会打印出上面的提示。
+// def sql = groovy.sql.Sql.newInstance('jdbc:mysql://localhost:3306/weatherinfo', 'root', 'root', 'com.mysql.jdbc.Driver')
+def sql = groovy.sql.Sql.newInstance('jdbc:mysql://localhost:3306/weatherinfo', 'root', 'root')
+println sql.connection.catalog
+
+println "City                 Temperature"
+sql.eachRow('select * from weather') {
+    printf "%-20s %s\n", it.city, it[1]
+}
+
+processMeta = {metaData ->
+    metaData.columnCount.times { i ->
+        printf "%-21s", metaData.getColumnLabel(i + 1)
+    }
+    println ""
+}
+
+sql.eachRow('select * from weather', processMeta) {
+    printf "%-20s %s\n", it.city, it[1]
+}
+
+bldr = new groovy.xml.MarkupBuilder()
+
+bldr.weather {
+    sql.eachRow('select * from weather') {
+        city(name : it.city, temperature : it.temperature)
+    }
+}
+println ""
+
+dataSet = sql.dataSet('weather')
+
+citiesBelowFreezing = dataSet.findAll {
+    it.temperature < 32
+}
+println "Cities below freezing:"
+citiesBelowFreezing.each {
+    println it.city
+}
+
+
+/* 注释掉插入语句
+println "Number of cities : " + sql.rows('select * from weather').size()
+dataSet.add(city: 'Denver', temperature: 19)
+println "Number of cities : " + sql.rows('select * from weather').size()
+
+temperature = 50
+sql.executeInsert("""insert into weather (city, temperature)
+                    values ('Oklahoma City', ${temperature})""")
+println sql.firstRow("select temperature from weather where city='Oklahoma City'")
+*/
 
 
 
+// 31、测试getMetaMethod
+println "31、测试getMetaMethod"
+str = "hello"
+methodName = 'toUpperCase'
+// 名字可能来自输入，而不是硬编码的
+
+methodOfInterest = str.metaClass.getMetaMethod(methodName)
+
+println methodOfInterest.invoke(str)
+
+
+
+// 32、测试respondTo，该方法的第三个参数，表示方法参数，传的值可以是具体的参数值，也可以是参数的类
+println "32、测试respondTo，该方法的第三个参数，表示方法参数，传的值可以是具体的参数值，也可以是参数的类"
+str = ""
+print "Does String respond to toUpperCase()? "
+println String.metaClass.respondsTo(str, 'toUpperCase')? 'yes' : 'no'
+
+print "Does String respond to compareTo(String)? "
+println String.metaClass.respondsTo(str, 'compareTo', "test")? 'yes' : 'no'
+
+print "Does String respond to compareTo(String)? "
+println String.metaClass.respondsTo(str, 'compareTo', String)? 'yes' : 'no'
+
+print "Does String respond to toUpperCase(int)? "
+println String.metaClass.respondsTo(str, 'toUpperCase', 5)? 'yes' : 'no'
+
+print "Does String respond to toUpperCase(int)? "
+println String.metaClass.respondsTo(str, 'toUpperCase', int)? 'yes' : 'no'
+
+
+
+// 33、测试动态访问对象
+println "33、测试动态访问对象"
+def printInfo(obj) {
+    // 假定用户从标准输入键入这些值
+    usrRequestedProperty = 'bytes'
+    usrRequestedMethod = 'toUpperCase'
+
+    println obj[usrRequestedProperty]
+    println obj."$usrRequestedProperty"
+
+    println obj."$usrRequestedMethod"()
+    println obj.invokeMethod(usrRequestedMethod, null)
+}
+
+printInfo('hello')
+
+println "Properties of 'hello' are: "
+'hello'.properties.each { println it }
+
+// 34、测试GroovyInterceptable
+println "34、测试GroovyInterceptable"
+class Car implements GroovyInterceptable {
+    def check() { System.out.println "check called..." }
+    def start() { System.out.println "start called..." }
+    def drive() { System.out.println "drive called..." }
+
+    def invokeMethod(String name, args) {
+        System.out.print("Call to $name intercepted... ")
+
+        if (name != 'check') {
+            System.out.print("running filter... ")
+            Car.metaClass.getMetaMethod('check').invoke(this, null)
+            //上面一行，可以用：Car.metaClass.invokeMethod(this, 'check')
+        }
+
+        // 下面6行，可以直接用：Car.metaClass.invokeMethod(this, name, args)
+        def validMethod = Car.metaClass.getMetaMethod(name, args)
+        if (validMethod != null) {
+            validMethod.invoke(this, args)
+        } else {
+            Car.metaClass.invokeMethod(this, name, args)
+        }
+    }
+}
+
+car = new Car()
+car.start()
+car.drive()
+car.check()
+try {
+    car.speed()
+} catch(Exception ex) {
+    println ex
+}
+
+
+// 35、测试MetaClass拦截
+println "35、测试MetaClass拦截"
+class Car1 {
+    def check() { System.out.println "check called..." }
+    def start() { System.out.println "start called..." }
+    def drive() { System.out.println "drive called..." }
+}
+
+Car1.metaClass.invokeMethod = { String name, args ->
+    System.out.print("Call to $name intercepted... ")
+
+    if (name != 'check') {
+        System.out.print("running filter... ")
+        Car1.metaClass.getMetaMethod('check').invoke(delegate, null)
+    }
+
+    def validMethod = Car1.metaClass.getMetaMethod(name, args)
+    if (validMethod != null) {
+        validMethod.invoke(delegate, args)
+    } else {
+        Car1.metaClass.invokeMissingMethod(delegate, name, args)
+    }
+}
+car = new Car1()
+car.start()
+car.drive()
+car.check()
+try {
+    car.speed()
+} catch(Exception ex) {
+    println ex
+}
+
+// 36、测试对POJO的方法的拦截
+println "36、测试对POJO的方法的拦截"
+Integer.metaClass.invokeMethod = { String name, args ->
+    System.out.println("Call to $name intercepted on $delegate... ")
+
+    def validMethod = Integer.metaClass.getMetaMethod(name, args)
+    if (validMethod == null) {
+        Integer.metaClass.invokeMissingMethod(delegate, name, args)
+    } else {
+        System.out.println("running pre-filter... ")
+        result = validMethod.invoke(delegate, args)
+        System.out.println("running post-filter... ")
+        result
+    }
+}
+
+println 5.floatValue()
+println 5.intValue()
+try {
+    println 5.empty()
+} catch(Exception ex) {
+    println ex
+}
+
+
+// 37、测试分类的方法注入
+println "37、测试分类的方法注入"
+class StringUtil {
+    def static toSSN(self) { // 如果想将参数限制为String类型，则使用toSSN(String self)
+        if (self.size() == 9) {
+            "${self[0..2]}-${self[3..4]}-${self[5..8]}"
+        }
+    }
+}
+
+use(StringUtil) {
+    println "123456789".toSSN()
+    println new StringBuilder("987654321").toSSN()
+}
+
+try {
+    println "123456789".toSSN()
+} catch(MissingMethodException ex) {
+    println ex.message
+}
+
+@Category(String)
+class StringUtilAnnotate {
+    def toSSN() {
+        if (size() == 9) {
+            "${this[0..2]}-${this[3..4]}-${this[5..8]}"
+        }
+    }
+}
+
+use(StringUtilAnnotate) {
+    println "123456789".toSSN()
+}
+
+class FindUtil {
+    def static extractOnly(String self, closure) {
+        def result = ''
+        self.each {
+            if (closure(it)) { result += it }
+        }
+        result
+    }
+}
+use(FindUtil) {
+    println "121254123".extractOnly { it == '4' || it == '5' }
+}
+
+use(StringUtil, FindUtil) {
+    str = "123487651"
+    println str.toSSN()
+    println str.extractOnly { it == '8' || it == '1' }
+}
+
+class Helper {
+    def static toString(String self) {
+        def method = self.metaClass.methods.find { it.name == 'toString' }
+        '!!' + method.invoke(self, null) + '!!'
+    }
+}
+
+use(Helper) {
+    println 'hello'.toString()
+}
+
+// 38、测试ExpandoMetaClass注入方法
+println "38、测试ExpandoMetaClass注入方法"
+Number.metaClass.someMethod = { ->
+    println "someMethod called"
+}
+
+Number.metaClass.someMethod = { String s ->
+    println "someMethod called " + s
+}
+
+Number.metaClass.someMethod = { ->
+    println "someMethod called new"
+}
+
+2.someMethod()
+2L.someMethod("str")
+
+
+// 39、
+println "39、"
+class Person3 {
+    def play() { println 'playing...' }
+}
+def emc = new ExpandoMetaClass(Person)
+emc.sing = { ->
+    'oh baby baby...'
+}
+emc.initialize()
+
+def jack = new Person3()
+def paul = new Person3()
+
+jack.metaClass = emc
+
+println jack.sing()
+
+try {
+    paul.sing()
+} catch(ex) {
+    println ex
+}
+
+jack.metaClass = null
+try {
+    jack.play()
+    jack.sing()
+} catch(ex) {
+    println ex
+}
 
 
 
