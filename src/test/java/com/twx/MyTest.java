@@ -323,6 +323,13 @@ public class MyTest {
         }
     }
 
+    @Test
+    public void test023() {
+        Map<String, String> map = new HashMap<>();
+        map.put(null, null);
+        MessageUtil.onTime(map.containsKey(null));
+    }
+
     @Override
     public String toString() {
         return "MyTest{"
