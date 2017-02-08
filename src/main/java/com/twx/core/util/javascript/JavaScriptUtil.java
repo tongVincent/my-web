@@ -73,7 +73,7 @@ public abstract class JavaScriptUtil {
     public static Object supportMapConverter(ScriptEngine engine, Map.Entry<String, Object> entry) {
         if (entry.getValue() instanceof Map) {
             final String script = "JSON.parse({})";
-            engine.put(entry.getKey(), JSONBinder.binder(Object.class).toJSON(entry.getValue()));
+            engine.put(entry.getKey(), JSONBinder.binder(Object.class).toJson(entry.getValue()));
             try {
                 return engine.eval(StringUtil.format(script, entry.getKey()));
             } catch (ScriptException e) {

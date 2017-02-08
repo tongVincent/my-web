@@ -11,16 +11,20 @@ import java.util.function.Function;
  * Created by vincent.tong on 2016/12/12.
  */
 public class LocalCache<K, V> {
-    private Map<K, V> cache = new HashMap<>();
+    private final Map<K, V> cache = new HashMap<>();
     private Function<K, V> defaultGetter;
 
     public LocalCache(Function<K, V> getter) {
-        setDefaultGetter(getter);
+        setGetter(getter);
+    }
+
+    private void setGetter(Function<K, V> getter) {
+        Objects.requireNonNull(getter);
+        defaultGetter = getter;
     }
 
     public void setDefaultGetter(Function<K, V> getter) {
-        Objects.requireNonNull(getter);
-        defaultGetter = getter;
+        setGetter(getter);
     }
 
     public V get(K key) {

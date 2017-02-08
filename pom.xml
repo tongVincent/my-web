@@ -261,6 +261,7 @@
         <!-- Gson的引用 end -->
 
         <!-- Jackson的引用 begin -->
+        <!-- 以下三个是基本包 -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -276,6 +277,7 @@
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+        <!-- 用来支撑jaxb注解 -->
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
