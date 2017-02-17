@@ -33,9 +33,9 @@ public class AsyncServlet2 extends HttpServlet {
             try {
                 MessageUtil.onTime("start run2");
                 Thread.sleep(2000); // 让线程休眠2s钟模拟超时操作
-                PrintWriter wirter = ctx.getResponse().getWriter();
-                wirter.write("延迟输出2");
-                wirter.flush();
+                PrintWriter writer = ctx.getResponse().getWriter();
+                writer.write("延迟输出2");
+                writer.flush();
                 ctx.complete();
                 MessageUtil.onTime("延迟输出2:");
             } catch (InterruptedException e) {
@@ -45,6 +45,6 @@ public class AsyncServlet2 extends HttpServlet {
             }
         });
         out.println("结束AsyncServlet2的时间：" + LocalDateTime.now() + ".");
-        out.flush();
+        out.flush(); // 如果这里调用了out.close()则在异步周期中，就不能用writer输出内容到页面了，但依然可以执行其他异步操作
     }
 }
