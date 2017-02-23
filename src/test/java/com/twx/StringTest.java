@@ -3,6 +3,8 @@ package com.twx;
 import com.twx.test.util.MessageUtil;
 import org.junit.Test;
 
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,8 +52,42 @@ public class StringTest extends BaseTest {
         MessageUtil.onTime(str.charAt(0));
         MessageUtil.onTime(str.charAt(1));
         MessageUtil.onTime(str.charAt(2));
-        MessageUtil.onTime((int)str.charAt(0));
-        MessageUtil.onTime((int)str.charAt(1));
-        MessageUtil.onTime((int)str.charAt(2));
+        MessageUtil.onTime((int) str.charAt(0));
+        MessageUtil.onTime((int) str.charAt(1));
+        MessageUtil.onTime((int) str.charAt(2));
+        MessageUtil.onTime(str.getBytes());
+    }
+
+    /**
+     * 从下面测试可以看出，增补区域U+D800到U+DFFF是没有分配字符的，只能由2个增补字符组成表示一个字，
+     * 即高代理U+D800到U+DBFF，低代理U+DC00到U+DFFF
+     * @throws Exception
+     */
+    @Test
+    public void test006() throws Exception {
+        int[] codePoints = {0xd802, 0xd802, 0xdf00, 0xdf01, 0x34};
+        String str = new String(codePoints, 0, codePoints.length);
+        char[] ch = str.toCharArray();
+        for (char c : ch) {
+            System.out.print(c + "--" + Integer.toHexString(c) + " "); //输出？？？,因为Unicode中不存在这样的char
+
+        }
+
+        FileWriter out = new FileWriter("aa");
+        out.write(ch);
+        out.close();
+        System.out.print("\n***********************\n");
+        FileReader in = new FileReader("aa");
+        int c;
+        /**
+         * 对比结果发现非代理范围的字符可以正常写入与读出
+         * 但是来自高代理与低代理范围的字符无法正常写入，而是被转化为0x3f，如第一个和第四个增补字符
+         * 如果连续的2个增补字符可以组成一个字，则可以正确写入和读出，如第二个和第四个增补字符符合高低代理，可以组成一个字
+         */
+        while ((c = in.read()) != -1) {
+            System.out.print(Integer.toHexString(c) + " "); //为什么是3f?
+        }
+        in.close();
+        System.out.println(str);
     }
 }

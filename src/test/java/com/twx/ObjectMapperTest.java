@@ -2,6 +2,8 @@ package com.twx;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.twx.core.util.json.JSONBinder;
 import com.twx.test.domain.People;
 import com.twx.test.util.MessageUtil;
@@ -68,5 +70,15 @@ public class ObjectMapperTest extends BaseTest {
 
         String results = JSONBinder.binder(People.class).toJson(map);
         MessageUtil.onTime(results);
+    }
+
+    @Test
+    public void test007() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+
+        ObjectNode obj = mapper.createObjectNode();
+        obj.with("other").with("my").put("type", "").putArray("d").addObject().put("ddds","");
+        MessageUtil.onTime(mapper.writeValueAsString(obj));
     }
 }

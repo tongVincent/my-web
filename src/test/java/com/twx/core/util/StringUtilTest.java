@@ -9,20 +9,18 @@ import junit.framework.TestCase;
 public class StringUtilTest extends TestCase {
 
     public void testSplitByByteSizeOnUTF8() throws Exception {
-        String str = "a中国大方款收到上了对方空间&a9d0安抚\\(^o^)/~";
-        MessageUtil.onTime("10字节");
-        StringUtil.splitByByteSizeOnUTF8(str, 10).forEach(MessageUtil::onTime);
-        MessageUtil.onTime("1字节");
-        StringUtil.splitByByteSizeOnUTF8(str, 1).forEach(MessageUtil::onTime);
-        MessageUtil.onTime("2字节");
-        StringUtil.splitByByteSizeOnUTF8(str, 2).forEach(MessageUtil::onTime);
-        MessageUtil.onTime("3字节");
-        StringUtil.splitByByteSizeOnUTF8(str, 3).forEach(MessageUtil::onTime);
-        MessageUtil.onTime("4字节");
-        StringUtil.splitByByteSizeOnUTF8(str, 4).forEach(MessageUtil::onTime);
-        MessageUtil.onTime("5字节");
-        StringUtil.splitByByteSizeOnUTF8(str, 5).forEach(MessageUtil::onTime);
-        MessageUtil.onTime("6字节");
-        StringUtil.splitByByteSizeOnUTF8(str, 6).forEach(MessageUtil::onTime);
+        String str = "a中国大方款收到上了\uD842\uDFB7对方空间&a9d0安抚\\(^o^)/~";
+        print(str, 10);
+        print(str, 1);
+        print(str, 2);
+        print(str, 3);
+        print(str, 4);
+        print(str, 5);
+        print(str, 6);
+    }
+
+    private void print(String str, int byteSize) {
+        MessageUtil.onTime(byteSize + "字节");
+        StringUtil.splitByByteSizeOnUTF8(str, byteSize).forEach(MessageUtil::onTime);
     }
 }

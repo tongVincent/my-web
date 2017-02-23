@@ -11,6 +11,11 @@ import java.util.List;
  * Created by vincent.tong on 2016/6/30.
  */
 public abstract class StringUtil {
+
+    /**
+     * 一个中文，可能占2个字符（4个字节）
+     * 根据UTF-8的编码规则，可以知道如果字节以10开头的是多字节的中间字节
+     */
     public static List<String> splitByByteSizeOnUTF8(String str, int byteSize) {
         if (!StringUtils.hasText(str) || byteSize <= 0) {
             return Collections.emptyList();

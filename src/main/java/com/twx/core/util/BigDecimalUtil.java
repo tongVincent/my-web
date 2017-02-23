@@ -6,6 +6,9 @@ import java.util.Objects;
 
 /**
  * Created by vincent.tong on 2016/7/21.
+ * 当把double类型为BigDecimal时，
+ * 正确的做法是：先把double转为为字符串（调用String.valueOf()或Double.toString()），然后再用字符串创建BigDecimal。
+ * 这是因为直接用double类型转换（直接调用BigDecimal构造函数），可能会出现不精确的情况。如：1.2可能转换成BigDecimal的时候变成了1.1999999。
  */
 public abstract class BigDecimalUtil {
     public static BigDecimal getOrElse(Double d) {
