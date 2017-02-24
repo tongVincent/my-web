@@ -18,15 +18,15 @@ public class GsonUtilTest {
         A a = new A(5, "vincent");
         String result = GsonUtil.toJson(a);
         MessageUtil.onTime(result);
-        Assert.assertEquals(result, "{\"my-name\":\"vincent\",\"age\":5}");
+        Assert.assertEquals("{\"my-name\":\"vincent\",\"age\":5}", result);
     }
 
     @Test
     public void testFromJson() throws Exception {
         String str = "{\"my-name\":\"vincent\",\"age\":5}";
         A a = GsonUtil.fromJson(str, A.class);
-        Assert.assertEquals(a.getName(), "vincent");
-        Assert.assertEquals(a.getAge(), 5);
+        Assert.assertEquals("vincent", a.getName());
+        Assert.assertEquals(5, a.getAge());
     }
 
     @Test
@@ -34,8 +34,8 @@ public class GsonUtilTest {
         String str = "{\"my-name\":\"vincent\",\"age\":5}";
         A a = GsonUtil.fromJson(str, new TypeToken<A>() {
         });
-        Assert.assertEquals(a.getName(), "vincent");
-        Assert.assertEquals(a.getAge(), 5);
+        Assert.assertEquals("vincent", a.getName());
+        Assert.assertEquals(5, a.getAge());
     }
 
     @Test
@@ -43,8 +43,8 @@ public class GsonUtilTest {
         String str = "[{\"my-name\":\"cha\",\"age\":15},{\"my-name\":\"vincent\",\"age\":5}]";
         List<A> list = GsonUtil.fromJson(str, new TypeToken<List<A>>() {
         });
-        Assert.assertEquals(list.size(), 2);
-        Assert.assertEquals(list.get(0).getClass(), A.class);
+        Assert.assertEquals(2, list.size());
+        Assert.assertEquals(A.class, list.get(0).getClass());
     }
 }
 

@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -23,17 +24,25 @@ public class JSONBinderTest {
     public void testFromJSON() throws Exception {
         String str = "{\"name\":\"vincent\",\"age\":5}";
         People a = binder.fromJson(str);
-        Assert.assertEquals(a.getName(), "vincent");
-        Assert.assertEquals(a.getAge(), 5);
+        Assert.assertEquals("vincent", a.getName());
+        Assert.assertEquals(5, a.getAge());
     }
 
     @Test
     public void testFromJSONList() throws Exception {
         String str = "[{\"name\":\"cha\",\"age\":15},{\"name\":\"vincent\",\"age\":5}]";
         List<People> list = binder.fromJson(str, List.class);
-        Assert.assertEquals(list.size(), 2);
-        Assert.assertEquals(list.get(0).getClass(), People.class);
-        Assert.assertEquals(list.get(0).getName(), "cha");
+        Assert.assertEquals(2, list.size());
+        Assert.assertEquals(People.class, list.get(0).getClass());
+        Assert.assertEquals("cha", list.get(0).getName());
+    }
+
+    @Test
+    public void testFromJSONList2() throws Exception {
+        String str = "[{\"name\":\"cha\",\"age\":15},{\"name\":\"vincent\",\"age\":5}]";
+        List<Object> list = JSONBinder.binder(Object.class).fromJson(str, List.class);
+        Assert.assertEquals(2, list.size());
+        Assert.assertEquals(LinkedHashMap.class, list.get(0).getClass());
     }
 
     @Test
@@ -41,6 +50,6 @@ public class JSONBinderTest {
         People a = new People("vincent", 5);
         String result = binder.toJson(a);
         MessageUtil.onTime(result);
-        Assert.assertEquals(result, "{\"name\":\"vincent\",\"age\":5}");
+        Assert.assertEquals("{\"name\":\"vincent\",\"age\":5}", result);
     }
 }

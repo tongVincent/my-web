@@ -6,11 +6,14 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Created by vincent.tong on 2016/6/30.
  */
 public abstract class StringUtil {
+
+    public static final String UNDER_LINE = "_";
 
     /**
      * 一个中文，可能占2个字符（4个字节）
@@ -48,4 +51,70 @@ public abstract class StringUtil {
     public static String format(String pattern, Object... arguments) {
         return MessageFormatter.arrayFormat(pattern, arguments).getMessage();
     }
+
+    /**
+     * 把下划线的字符串转换成驼峰式
+     * @param underlineStr, 下划线分隔的字符串
+     * @param initialIsUpper, 最后结果的首字母是否大写
+     * @return
+     */
+    public static String underline2camel(String underlineStr, boolean initialIsUpper) {
+        if (isBlank(underlineStr) || !underlineStr.contains(UNDER_LINE)) {
+            return underlineStr;
+        }
+
+        String result = Stream.of(underlineStr.split(UNDER_LINE))
+            .map(String::toLowerCase)
+            .map(StringUtil::initial2Upper)
+            .reduce("", String::concat);
+
+        return initialIsUpper ? result : initial2Lower(result);
+    }
+
+    public static String underline2camel(String underlineStr) {
+        return underline2camel(underlineStr, false);
+    }
+
+    public static boolean isEmpty(String str) {
+        return str == null || "".equals(str);
+    }
+
+    public static boolean isBlank(String str) {
+        return !hasText(str);
+    }
+
+    public static boolean hasText(String str) {
+        return StringUtils.hasText(str);
+    }
+
+    public static String initial2Upper(String str) {
+        if (isEmpty(str)) {
+            return str;
+        }
+
+        char[] cs = str.toCharArray();
+        if (cs[0] >= 'a' && cs[0] <= 'z') {
+            cs[0] -= 32;
+            return String.valueOf(cs);
+        } else {
+            return str;
+        }
+    }
+
+    public static String initial2Lower(String str) {
+        if (isEmpty(str)) {
+            return str;
+        }
+
+        char[] cs = str.toCharArray();
+        if (cs[0] >= 'A' && cs[0] <= 'Z') {
+            cs[0] += 32;
+            return String.valueOf(cs);
+        } else {
+            return str;
+        }
+    }
+
+
+
 }

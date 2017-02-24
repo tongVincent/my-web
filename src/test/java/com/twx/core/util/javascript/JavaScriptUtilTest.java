@@ -19,7 +19,7 @@ public class JavaScriptUtilTest {
         Map<String, Object> params = new LinkedHashMap<>();
         params.put("customer", customer);
         Object result = JavaScriptUtil.eval("customer.city", params, JavaScriptUtil::supportMapConverter);
-        Assert.assertEquals(result, city);
+        Assert.assertEquals(city, result);
     }
 
 }
