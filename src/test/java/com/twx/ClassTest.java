@@ -6,7 +6,10 @@ import com.twx.test.util.MessageUtil;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,6 +51,27 @@ public class ClassTest extends BaseTest {
         for (Field field : clz.getDeclaredFields()) {
             MessageUtil.onTime(field.getName());
         }
+    }
+
+    public abstract class Parent<T> {
+
+        public Class<?> getGeneric() {
+            Type type = this.getClass().getGenericSuperclass();
+            if (type instanceof ParameterizedType) {
+                Type generic = ((ParameterizedType) type).getActualTypeArguments()[0];
+                if (generic instanceof Class) {
+                    return (Class<?>) generic;
+                }
+            }
+            return null;
+        }
+    }
+
+    @Test
+    public void test003() {
+        MessageUtil.onTime(new Parent<People>() {}.getGeneric());
+        MessageUtil.onTime(new Parent<Student>() {}.getGeneric());
+        MessageUtil.onTime(new Parent<List<People>>() {}.getGeneric());
     }
 
 }
