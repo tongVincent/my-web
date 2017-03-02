@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.twx.core.util.CharacterEncodings;
 import com.twx.core.util.json.JSONBinder;
 import com.twx.test.domain.People;
 import com.twx.test.util.MessageUtil;
@@ -51,7 +52,7 @@ public class ObjectMapperTest extends BaseTest {
     public void test004() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String str = "Man is distinguished, not only by his reason, but by this";
-        String base64 = mapper.convertValue(str.getBytes("utf-8"), String.class);
+        String base64 = mapper.convertValue(str.getBytes(CharacterEncodings.CHARSET_UTF_8), String.class);
         MessageUtil.onTime(base64);
     }
 
@@ -78,7 +79,7 @@ public class ObjectMapperTest extends BaseTest {
         mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 
         ObjectNode obj = mapper.createObjectNode();
-        obj.with("other").with("my").put("type", "").putArray("d").addObject().put("ddds","");
+        obj.with("other").with("my").put("type", "").putArray("d").addObject().put("ddds", "");
         MessageUtil.onTime(mapper.writeValueAsString(obj));
     }
 }

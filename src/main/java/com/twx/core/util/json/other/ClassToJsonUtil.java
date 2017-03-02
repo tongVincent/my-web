@@ -2,7 +2,6 @@ package com.twx.core.util.json.other;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.twx.core.util.StringUtil;
 import com.twx.core.util.json.JSONBinder;
 
@@ -21,7 +20,7 @@ public abstract class ClassToJsonUtil {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 
-        ObjectNode obj = mapper.createObjectNode();
+//        ObjectNode obj = mapper.createObjectNode();
 
         Class<?> superclass = clz.getSuperclass();
         if (superclass != null) {
@@ -44,7 +43,7 @@ public abstract class ClassToJsonUtil {
      */
     @SuppressWarnings("unchecked")
     public static String fromJson(String json, String className) {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(64);
         Map<String, Object> map = JSONBinder.binder(Map.class).fromJson(json);
 
         boolean hasClassName = StringUtil.hasText(className);
@@ -53,9 +52,7 @@ public abstract class ClassToJsonUtil {
             String name = className.toLowerCase();
             builder.append("@XmlRootElement(name = \"")
                 .append(name)
-                .append("\")\n")
-                .append("@XmlAccessorType(XmlAccessType.FIELD)\n")
-                .append("public class ")
+                .append("\")\n@XmlAccessorType(XmlAccessType.FIELD)\npublic class ")
                 .append(StringUtil.underline2camel(name, true))
                 .append(" {\n");
         }
@@ -63,8 +60,7 @@ public abstract class ClassToJsonUtil {
         map.forEach((key, value) -> {
             builder.append("    @XmlElement(name = \"")
                 .append(key)
-                .append("\")\n")
-                .append("    private ");
+                .append("\")\n    private ");
 
             String name = StringUtil.underline2camel(key);
             if (value instanceof List) {

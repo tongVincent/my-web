@@ -17,7 +17,7 @@ import java.io.IOException;
  * Created by vincent.tong on 2016/10/12.
  */
 public final class JSONBinder<T> {
-    static final ObjectMapper DEFAULT_OBJECT_MAPPER;
+    private static final ObjectMapper DEFAULT_OBJECT_MAPPER;
 
     static {
         DEFAULT_OBJECT_MAPPER = createMapper();
@@ -25,6 +25,15 @@ public final class JSONBinder<T> {
 
     public static <T> JSONBinder<T> binder(Class<T> beanClass) {
         return new JSONBinder<>(beanClass);
+    }
+
+    /**
+     * toJson后的属性名相同的会相互转换，注意origin不能是字符串，targetClass也不能是String类型，
+     * 与{@link JsonUtil#convert(Object, Class)}相同
+     * @see JsonUtil#convert(Object, Class)
+     */
+    public static <T> T convert(Object fromValue, Class<T> toValueType) {
+        return DEFAULT_OBJECT_MAPPER.convertValue(fromValue, toValueType);
     }
 
     public static ObjectMapper getObjectMapper() {

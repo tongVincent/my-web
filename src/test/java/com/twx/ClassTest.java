@@ -69,9 +69,9 @@ public class ClassTest extends BaseTest {
 
     @Test
     public void test003() {
-        MessageUtil.onTime(new Parent<People>() {}.getGeneric());
-        MessageUtil.onTime(new Parent<Student>() {}.getGeneric());
-        MessageUtil.onTime(new Parent<List<People>>() {}.getGeneric());
+        MessageUtil.onTime(new Parent<People>() { }.getGeneric());
+        MessageUtil.onTime(new Parent<Student>() { }.getGeneric());
+        MessageUtil.onTime(new Parent<List<People>>() { }.getGeneric());
     }
 
 }

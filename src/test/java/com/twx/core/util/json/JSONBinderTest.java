@@ -52,4 +52,15 @@ public class JSONBinderTest {
         MessageUtil.onTime(result);
         Assert.assertEquals("{\"name\":\"vincent\",\"age\":5}", result);
     }
+
+    @Test
+    public void testIndentOutput() throws Exception {
+        People a = new People("vincent", 5);
+        String result = binder.indentOutput().toJson(a);
+        MessageUtil.onTime(result);
+        Assert.assertEquals("{\r\n"
+            + "  \"name\" : \"vincent\",\r\n"
+            + "  \"age\" : 5\r\n"
+            + "}", result);
+    }
 }
