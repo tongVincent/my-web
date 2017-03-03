@@ -16,7 +16,7 @@ public abstract class JsonUtil {
         OBJECT_MAPPER = createMapper();
     }
 
-    // 默认用Jason的注解
+    // 默认用 Jackson 的注解
     private static ObjectMapper createMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(new JSONDateFormat()); // 设置日期转换格式
@@ -29,6 +29,7 @@ public abstract class JsonUtil {
 
     /**
      * toJson后的属性名相同的会相互转换，注意origin不能是字符串，targetClass也不能是String类型
+     * 原因：因为在 Jackson 里，String与Byte[]是相互转换的，见{@link #encodeBase64(String)} 和 {@link #decodeBase64(String)}
      * 与{@link JSONBinder#convert(Object, Class)}相同
      * @see JSONBinder#convert(Object, Class)
      */
