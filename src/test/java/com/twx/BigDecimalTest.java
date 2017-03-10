@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.math.RoundingMode;
 
 /**
  * Created by vincent.tong on 2017/2/8.
@@ -24,5 +25,14 @@ public class BigDecimalTest extends BaseTest {
         MessageUtil.onTime(new BigDecimal(new BigInteger("331321321323213"), 8, MathContext.DECIMAL32));
         MessageUtil.onTime(new BigDecimal(new BigInteger("331321321323213"), 8, MathContext.DECIMAL64));
         MessageUtil.onTime(new BigDecimal(new BigInteger("331321321323213"), 8));
+    }
+
+    /**
+     * 除法的时候，一定要有舍入的mode，否则当除不尽的时候会抛出java.lang.ArithmeticException
+     * 另外还需要指定精度，否则按被除数的精度来作为舍入的位置
+     */
+    @Test
+    public void test002() {
+        MessageUtil.onTime(new BigDecimal("10").divide(new BigDecimal("3"), 8, RoundingMode.HALF_UP));
     }
 }

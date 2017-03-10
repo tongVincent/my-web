@@ -68,4 +68,18 @@ public abstract class BigDecimalUtil {
         }
         return value.setScale(scale, RoundingMode.HALF_UP);
     }
+
+    // 指定精度的误差内，left<=right? 默认精度是6位小数
+    public static boolean lte(BigDecimal left, BigDecimal right) {
+        return lte(left, right, 6);
+    }
+
+    // 指定精度的误差内，left<=right? 有一个数为null，则都返回false
+    public static boolean lte(BigDecimal left, BigDecimal right, int scale) {
+        if (left != null && right != null) {
+            BigDecimal l = round(left, scale);
+            return l.compareTo(round(right, scale)) <= 0;
+        }
+        return false;
+    }
 }

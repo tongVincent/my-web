@@ -5,4 +5,16 @@ package com.twx.core.util;
  */
 public abstract class FileUtil {
 
+    public static String getPostfix(String fileName) {
+        if (fileName == null) {
+            return "";
+        }
+
+        int index = fileName.lastIndexOf('.');
+        if (index != -1) {
+            return fileName.substring(index + 1);
+        } else {
+            return "";
+        }
+    }
 }

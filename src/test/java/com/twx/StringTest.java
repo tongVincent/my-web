@@ -90,4 +90,22 @@ public class StringTest extends BaseTest {
         in.close();
         System.out.println(str);
     }
+
+    /**
+     * 从下面可以看出，字符串如果不是new的，则都指向同一个String对象，字符串常量池。
+     *
+     */
+    @Test
+    public void test007() {
+        String a = "abc";
+        String b = "abc";
+        MessageUtil.onTime(a == b); // true
+        MessageUtil.onTime(a.equals(b)); // true
+
+        a = new String("abc");
+        MessageUtil.onTime(a == b); // false
+        b = new String("abc");
+        MessageUtil.onTime(a == b); // false
+        MessageUtil.onTime(a.equals(b)); // true
+    }
 }
