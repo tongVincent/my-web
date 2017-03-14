@@ -1,5 +1,6 @@
 package com.twx.core.util.json;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -50,6 +51,7 @@ public final class JSONBinder<T> {
         mapper.configure(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME, true); // 是否用wrapper的名字来代替属性名，通过AnnotationIntrospector.findWrapperName查找
         // 下面配置，指是否允许包含ASCII小于32的控制字符。是指在引号中，不能直接出现这些控制字符，但可以用转义字符。设为true，则允许了。
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); //对象的null属性不序列化
         return mapper;
     }
 

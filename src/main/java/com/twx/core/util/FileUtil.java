@@ -1,5 +1,7 @@
 package com.twx.core.util;
 
+import java.io.File;
+
 /**
  * Created by vincent.tong on 2016/8/3.
  */
@@ -16,5 +18,9 @@ public abstract class FileUtil {
         } else {
             return "";
         }
+    }
+
+    public static boolean exists(String path) {
+        return StringUtil.hasText(path) && new File(path).exists();
     }
 }

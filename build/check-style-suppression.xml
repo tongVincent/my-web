@@ -3,4 +3,5 @@
 <suppressions>
     <suppress checks="ExecutableStatementCount|MethodLength" files="DecimalFormatTest.java"/>
     <suppress checks="ParameterNumber" files="DateUtil.java"/>
+    <suppress checks="UncommentedMain" files="CxfServer.java|CxfClient.java"/>
 </suppressions>
