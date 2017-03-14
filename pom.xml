@@ -43,6 +43,9 @@
 
         <plugin.jacoco.version>0.6.2.201302030002</plugin.jacoco.version>
 
+        <!-- CXF版本 -->
+        <cxf.version>3.1.10</cxf.version>
+
     </properties>
 
     <!-- spring3.0以后，使用Spring官方maven仓库下载依赖 -->
@@ -295,6 +298,25 @@
             <scope>test</scope>
         </dependency>
         <!-- cglib的引用 end -->
+
+        <!-- CXF begin -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        <!-- 如果CXF不集成到Web服务器中，必须添加该引用 -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        <!-- CXF end -->
 
     </dependencies>
 

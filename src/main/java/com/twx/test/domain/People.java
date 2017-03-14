@@ -1,11 +1,14 @@
 package com.twx.test.domain;
 
+import java.math.BigDecimal;
+
 /**
  * Created by vincent.tong on 2017/2/6.
  */
 public class People {
     private String name;
     private int age;
+    private BigDecimal money;
 
     public People() {
     }
@@ -29,5 +32,13 @@ public class People {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public BigDecimal getMoney() {
+        return money;
+    }
+
+    public void setMoney(BigDecimal money) {
+        this.money = money;
     }
 }
