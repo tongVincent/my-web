@@ -5,7 +5,11 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
@@ -14,6 +18,8 @@ import java.util.stream.Stream;
 public abstract class StringUtil {
 
     public static final String UNDER_LINE = "_";
+    static final String REG_PAT = "\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%amp;:/~\\+#]*[\\w\\-\\@?^=%amp;/~\\+#])?";
+    static final String WORD_PAT = "\\w+(-\\w+)*";
 
     /**
      * 一个中文，可能占2个字符（4个字节）
@@ -115,6 +121,15 @@ public abstract class StringUtil {
         }
     }
 
-
+    public static Set<String> splitToWords(String text) {
+        Set<String> s = new HashSet<>();
+        Matcher matcher = Pattern.compile(WORD_PAT).matcher(text);
+        while (matcher.find()) {
+            if (!s.contains(matcher.group())) {
+                s.add(matcher.group());
+            }
+        }
+        return s;
+    }
 
 }

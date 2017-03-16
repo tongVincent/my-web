@@ -2,6 +2,9 @@ package com.twx.core.util;
 
 import com.twx.test.util.MessageUtil;
 import junit.framework.TestCase;
+import org.junit.Assert;
+
+import java.util.Set;
 
 /**
  * Created by vincent.tong on 2016/7/22.
@@ -22,5 +25,12 @@ public class StringUtilTest extends TestCase {
     private void print(String str, int byteSize) {
         MessageUtil.onTime(byteSize + "字节");
         StringUtil.splitByByteSizeOnUTF8(str, byteSize).forEach(MessageUtil::onTime);
+    }
+
+    public void testSplitToWords() throws Exception {
+        String text = "a-b-c-d ab dd";
+        Set<String> words = StringUtil.splitToWords(text);
+        MessageUtil.onTime(words);
+        Assert.assertEquals(3, words.size());
     }
 }
