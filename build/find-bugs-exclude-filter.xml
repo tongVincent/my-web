@@ -6,4 +6,46 @@
         <!--EI2: May expose internal representation by incorporating reference to mutable object (EI_EXPOSE_REP2)-->
         <Bug code="RV,EI,EI2"/>
     </Match>
+    <Match>
+        <Class name="com.twx.test.other.StaticInitOrderTest"/>
+    </Match>
+
+    <!-- 下面是各种范例 -->
+
+    <!-- android-support-v4.jar：包过滤
+    <Match>
+        <Package name="~android\.support\.v4.*" />
+    </Match>
+    -->
+
+    <!-- 类过滤、方法
+    <Match>
+        <Class name="com.opencdk.MusicActivity" />
+        <Method name="getMusicName" />
+    </Match>
+    <Match>
+        <Class name="com.opencdk.VideoActivity"  />
+    </Match>
+    -->
+
+    <!-- Match all doublecheck violations in these methods of "AnotherClass".
+    <Match>
+        <Class name="com.opencdk.AnotherClass" />
+        <Or>
+            <Method name="nonOverloadedMethod" />
+            <Method name="frob" params="int,java.lang.String" returns="void" />
+            <Method name="blat" params="" returns="boolean" />
+        </Or>
+        <Bug code="DC" />
+    </Match>
+    -->
+
+    <!-- All bugs in test classes, except for JUnit-specific bugs
+    <Match>
+        <Class name="~.*\.*Test" />
+        <Not>
+            <Bug code="IJU" />
+        </Not>
+    </Match>
+    -->
 </FindBugsFilter>

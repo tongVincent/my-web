@@ -388,6 +388,10 @@
                     </rulesets>
                     <targetJdk>${project.build.targetJDK}</targetJdk>
                     <verbose>true</verbose>
+                    <!-- 添加不检查类 -->
+                    <excludes>
+                        <exclude>com/twx/test/other/StaticInitOrderTest.java</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
