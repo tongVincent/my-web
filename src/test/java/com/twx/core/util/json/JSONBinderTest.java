@@ -52,7 +52,7 @@ public class JSONBinderTest {
         a.setMoney(new BigDecimal("44760.30"));
         String result = binder.toJson(a);
         MessageUtil.onTime(result);
-        Assert.assertEquals("{\"name\":\"vincent\",\"age\":5,\"money\":44760.30}", result);
+        Assert.assertEquals("{\"name\":\"vincent\",\"age\":5,\"money\":44760.30,\"myName\":\"vincent\"}", result);
     }
 
     @Test
@@ -62,7 +62,8 @@ public class JSONBinderTest {
         MessageUtil.onTime(result);
         Assert.assertEquals("{\r\n"
             + "  \"name\" : \"vincent\",\r\n"
-            + "  \"age\" : 5\r\n"
+            + "  \"age\" : 5,\r\n"
+            + "  \"myName\" : \"vincent\"\r\n"
             + "}", result);
     }
 }

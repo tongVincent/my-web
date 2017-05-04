@@ -41,4 +41,8 @@ public class People {
     public void setMoney(BigDecimal money) {
         this.money = money;
     }
+
+    public String getMyName() {
+        return name;
+    }
 }

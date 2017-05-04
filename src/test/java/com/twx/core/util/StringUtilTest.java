@@ -4,6 +4,7 @@ import com.twx.test.util.MessageUtil;
 import junit.framework.TestCase;
 import org.junit.Assert;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,5 +33,27 @@ public class StringUtilTest extends TestCase {
         Set<String> words = StringUtil.splitToWords(text);
         MessageUtil.onTime(words);
         Assert.assertEquals(3, words.size());
+    }
+
+    /**
+     * 最后一个,后面没有东西，则不算进去
+     */
+    public void testSplitBySeparator() {
+        List<String> list = StringUtil.splitBySeparator(",1,,2,3,", ",");
+        Assert.assertEquals(5, list.size());
+        Assert.assertEquals("1", list.get(1));
+    }
+
+    public void testFormat() {
+        String format = StringUtil.format("数值：{}，字符串：{}", 123, "kankan");
+        Assert.assertEquals("数值：123，字符串：kankan", format);
+        format = StringUtil.format("数值：{}，字符串：{}", 123);
+        Assert.assertEquals("数值：123，字符串：{}", format);
+    }
+
+    public void testHideMobile() {
+        String mobile = "12345678900";
+        StringUtil.hideMobile(mobile);
+        Assert.assertEquals("123****8900", StringUtil.hideMobile("12345678900"));
     }
 }

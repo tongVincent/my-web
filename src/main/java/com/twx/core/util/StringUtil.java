@@ -4,6 +4,7 @@ import org.slf4j.helpers.MessageFormatter;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -60,13 +61,14 @@ public abstract class StringUtil {
 
     /**
      * 把下划线的字符串转换成驼峰式
-     * @param underlineStr, 下划线分隔的字符串
+     *
+     * @param underlineStr,   下划线分隔的字符串
      * @param initialIsUpper, 最后结果的首字母是否大写
      * @return
      */
     public static String underline2camel(String underlineStr, boolean initialIsUpper) {
         if (isBlank(underlineStr) || !underlineStr.contains(UNDER_LINE)) {
-            return underlineStr;
+            return initialIsUpper ? underlineStr : initial2Lower(underlineStr);
         }
 
         String result = Stream.of(underlineStr.split(UNDER_LINE))
@@ -130,6 +132,21 @@ public abstract class StringUtil {
             }
         }
         return s;
+    }
+
+    public static List<String> splitBySeparator(String text, String regex) {
+        if (hasText(text)) {
+            return Arrays.asList(text.split(regex));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public static String hideMobile(String mobile) {
+        if (isBlank(mobile)) {
+            return mobile;
+        }
+        return mobile.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
     }
 
 }
