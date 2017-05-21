@@ -46,6 +46,10 @@
         <!-- CXF版本 -->
         <cxf.version>3.1.10</cxf.version>
 
+        <!-- joda版本 -->
+        <joda.version>2.9.4</joda.version>
+
+
     </properties>
 
     <!-- spring3.0以后，使用Spring官方maven仓库下载依赖 -->
@@ -317,6 +321,14 @@
             <version>${cxf.version}</version>
         </dependency>
         <!-- CXF end -->
+
+        <!-- joda 时间的计算 end -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda.version}</version>
+        </dependency>
+        <!-- joda end -->
 
     </dependencies>
 

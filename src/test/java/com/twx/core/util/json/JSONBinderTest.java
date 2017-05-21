@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -53,6 +54,22 @@ public class JSONBinderTest {
         String result = binder.toJson(a);
         MessageUtil.onTime(result);
         Assert.assertEquals("{\"name\":\"vincent\",\"age\":5,\"money\":44760.30,\"myName\":\"vincent\"}", result);
+    }
+
+    @Test
+    public void testToJSONList() throws Exception {
+        People a = new People("vincent", 5);
+        a.setMoney(new BigDecimal("44760.30"));
+        People b = new People("vincent2", 22);
+        b.setMoney(new BigDecimal("111.30"));
+
+        List<People> list = new ArrayList<>();
+        list.add(a);
+        list.add(b);
+
+        String result = binder.toJson(list);
+        MessageUtil.onTime(result);
+        Assert.assertEquals("[{\"name\":\"vincent\",\"age\":5,\"money\":44760.30,\"myName\":\"vincent\"},{\"name\":\"vincent2\",\"age\":22,\"money\":111.30,\"myName\":\"vincent2\"}]", result);
     }
 
     @Test

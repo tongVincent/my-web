@@ -43,7 +43,7 @@ public class FileIOTest extends BaseTest {
     // 列出指定目录下的所有子目录，mvn clean install命令
     @Test
     public void test003() throws IOException {
-        String directory = "D:\\sgcloud";
+        String directory = "E:\\twx\\code\\elink";
         if (!FileUtil.exists(directory)) {
             return;
         }
