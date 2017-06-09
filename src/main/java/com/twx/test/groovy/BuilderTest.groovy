@@ -174,3 +174,168 @@ class TodoBuilder {
         values
     }
 }
+
+
+bldr = new TodoBuilderWithSupport()
+
+bldr.build {
+    Prepare_Vacation(start: '02/15', end: ' 02 / 22 ') {
+        Reserve_Flight(on: '01/01', status: 'done')
+        Reserve_Hotel(on: '01/02')
+        Reserve_Car(on: '01/02')
+    }
+    Buy_New_Mac {
+        Install_QuickSilver
+        Install_TextMate
+        Install_Groovy {
+            Run_all_tests
+        }
+    }
+}
+
+
+class TodoBuilderWithSupport  extends BuilderSupport {
+    int level = 0
+    def result = new StringWriter()
+
+    void setParent(parent, child) {}
+
+    def createNode(name) {
+        if (name == 'build') {
+            result << "To-Do:\n"
+            'buildnode'
+        } else {
+            handle(name, [:])
+        }
+    }
+
+    def createNode(name, Object value) {
+        throw new Exception("Invalid format");
+    }
+
+    def createNode(name, Map attribute) {
+        handle(name, attribute)
+    }
+
+    def createNode(name, Map attribute, Object value) {
+        throw new Exception("Invalid format");
+    }
+
+    def propertyMissing(String name) {
+        handle(name, [:])
+        level--
+    }
+
+    void nodeCompleted(parent, node) {
+        level--
+        if (node == 'buildnode') {
+            println result
+        }
+    }
+
+    def handle(String name, attributes) {
+        level++
+        level.times { result << " " }
+        result << placeXifStatusDone(attributes)
+        result << name.replaceAll("_", " ")
+        result << printParameters(attributes)
+        result << "\n"
+        name
+    }
+
+    def placeXifStatusDone(attributes) {
+        attributes['status'] == 'done' ? "x" : "-"
+    }
+
+    def printParameters(attributes) {
+        def values = ""
+        if (attributes.size() > 0) {
+            values += " ["
+            def count = 0
+            attributes.each { key, value ->
+                if (key == 'status') return
+                count++
+                values += (count > 1 ? " " : "")
+                values += "${key}: ${value}"
+            }
+            values += "]"
+        }
+        values
+    }
+}
+
+def bldr = new RobotBuilder()
+
+def robot = bldr.robot('iRobot') {
+    forward(dist: 20)
+    left(rotation: 90)
+    forward(speed: 10, duration: 5)
+}
+
+robot.go()
+
+
+class RobotBuilder extends FactoryBuilderSupport {
+    {
+        registerFactory('robot', new RobotFactory())
+        registerFactory('forward', new ForwardMoveFactory())
+        registerFactory('left', new LeftTurnFactory())
+    };
+}
+
+class Robot {
+    String name;
+    def movements =[]
+
+    void go() {
+        println "Robot $name operating..."
+        movements.each { movement -> println movement }
+    }
+}
+
+class ForwardMove {
+    def dist
+    String toString() { "move distance... $dist" }
+}
+
+class LeftTurn {
+    def rotation
+    String toString() {
+        "turn left... $rotation degrees"
+    }
+}
+
+class RobotFactory extends AbstractFactory {
+    def newInstance(FactoryBuilderSupport builder, name, value, Map attributes) {
+        new Robot(name: value)
+    }
+
+    void setChild(FactoryBuilderSupport builder, Object parent, Object child) {
+        parent.movements << child
+    }
+}
+
+class ForwardMoveFactory extends AbstractFactory {
+    boolean isLeaf() { true }
+
+    def newInstance(FactoryBuilderSupport builder, name, value, Map attributes) {
+        new ForwardMove()
+    }
+
+    boolean onHandleNodeAttributes(FactoryBuilderSupport builder, Object node, Map attributes) {
+        if (attributes.speed && attributes.duration) {
+            node.dist = attributes.speed * attributes.duration
+            attributes.remove('speed')
+            attributes.remove('duration')
+        }
+        true
+    }
+}
+
+class LeftTurnFactory extends AbstractFactory {
+    boolean isLeaf() { true }
+
+    def newInstance(FactoryBuilderSupport builder, name, value, Map attributes) {
+        new LeftTurn()
+    }
+}

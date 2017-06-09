@@ -14,7 +14,7 @@ public class AnnotationTest extends BaseTest {
 
     // 注解不能用newInstance实例化
     @Test
-    public void testNewInstance() throws Exception{
+    public void testNewInstance() throws Exception {
         thrown.expect(InstantiationException.class);
         Template.class.newInstance();
     }
