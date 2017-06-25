@@ -56,4 +56,10 @@ public class StringUtilTest extends TestCase {
         StringUtil.hideMobile(mobile);
         Assert.assertEquals("123****8900", StringUtil.hideMobile("12345678900"));
     }
+
+    public void testGenerateOrderNo() {
+        MessageUtil.onTime(StringUtil.generateOrderNo(123L, 9));
+        MessageUtil.onTime(StringUtil.generateOrderNo(123L, 123));
+        MessageUtil.onTime(StringUtil.generateOrderNo(58888889L, 56));
+    }
 }

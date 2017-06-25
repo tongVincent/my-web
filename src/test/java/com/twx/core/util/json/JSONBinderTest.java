@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -82,5 +83,15 @@ public class JSONBinderTest {
             + "  \"age\" : 5,\r\n"
             + "  \"myName\" : \"vincent\"\r\n"
             + "}", result);
+    }
+
+    @Test
+    public void test() throws Exception {
+        Object obj = 5;
+        MessageUtil.onTime(binder.toJson(obj));
+
+        People a = new People("vincent", 5);
+        a.setBirthDay(new Date());
+        MessageUtil.onTime(binder.toJson(a));
     }
 }

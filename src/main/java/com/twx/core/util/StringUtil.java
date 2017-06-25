@@ -6,6 +6,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -147,6 +148,10 @@ public abstract class StringUtil {
             return mobile;
         }
         return mobile.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+    }
+
+    public static String generateOrderNo(Long CustomerId, int num) {
+        return Convert.toString(new Date(), "yyyyMMddHHmmss") + String.format("%02d", num) + String.format("%06d", CustomerId);
     }
 
 }

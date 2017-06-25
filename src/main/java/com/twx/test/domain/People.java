@@ -1,6 +1,7 @@
 package com.twx.test.domain;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Created by vincent.tong on 2017/2/6.
@@ -9,6 +10,7 @@ public class People {
     private String name;
     private int age;
     private BigDecimal money;
+    private Date birthDay;
 
     public People() {
     }
@@ -44,5 +46,13 @@ public class People {
 
     public String getMyName() {
         return name;
+    }
+
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
     }
 }

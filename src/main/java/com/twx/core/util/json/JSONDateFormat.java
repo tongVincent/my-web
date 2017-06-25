@@ -83,6 +83,6 @@ public class JSONDateFormat extends DateFormat {
 
     @Override
     public Object clone() {
-        return super.clone();
+        return this;
     }
 }

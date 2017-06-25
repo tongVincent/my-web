@@ -1,5 +1,6 @@
 package com.twx;
 
+import com.twx.core.util.json.GsonUtil;
 import com.twx.test.util.MessageUtil;
 import org.junit.Test;
 
@@ -107,5 +108,15 @@ public class StringTest extends BaseTest {
         b = new String("abc");
         MessageUtil.onTime(a == b); // false
         MessageUtil.onTime(a.equals(b)); // true
+    }
+
+    @Test
+    public void test008() {
+        MessageUtil.onTime(GsonUtil.toJson("".split("-"))); // ""
+        MessageUtil.onTime(GsonUtil.toJson("-".split("-"))); // 空数组
+        MessageUtil.onTime(GsonUtil.toJson("d".split("-"))); // "d"
+        MessageUtil.onTime(GsonUtil.toJson("-d".split("-"))); // ""和"d"
+        MessageUtil.onTime(GsonUtil.toJson("d-".split("-"))); // "d"
+        MessageUtil.onTime(GsonUtil.toJson("d-s".split("-"))); // "d"和"s"
     }
 }
