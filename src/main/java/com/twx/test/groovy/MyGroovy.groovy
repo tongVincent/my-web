@@ -524,7 +524,7 @@ lst.with {
 
 // 25、测试DOMCategory的XML解析
 println "25、测试DOMCategory的XML解析"
-document = DOMBuilder.parse(getClass().getResource("/languages.xml").newReader()) // 解析xml文件获取document节点
+document = DOMBuilder.parse(getClass().getResource("/test/languages.xml").newReader()) // 解析xml文件获取document节点
 
 languages = document.documentElement // 通过document节点获取其根元素的节点
 
@@ -548,7 +548,7 @@ use(DOMCategory) {
 
 // 26、测试XMLParser的XML解析
 println "26、测试XMLParser的XML解析"
-languages = new XmlParser().parse(getClass().getResource("/languages.xml").newReader())
+languages = new XmlParser().parse(getClass().getResource("/test/languages.xml").newReader())
 println 'Languages and authors'
 // 节点的访问和属性的访问同使用DOMCategory一样
 languages.each {
@@ -570,7 +570,7 @@ println "languages by Wirth:" + languagesByAuthor('Wirth')
 
 // 27、测试XMLSlurper的XML解析，parse方法解析得到的是根节点
 println "27、测试XMLSlurper的XML解析，parse方法解析得到的是根节点"
-languages = new XmlSlurper().parse(getClass().getResource("/computerAndNaturalLanguages.xml").newReader())
+languages = new XmlSlurper().parse(getClass().getResource("/test/computerAndNaturalLanguages.xml").newReader())
         .declareNamespace(human:'http://www.twx.test.com.cn/Natural')
 
 print "Languages:"
