@@ -1,5 +1,6 @@
 package com.twx;
 
+import com.twx.core.util.BigDecimalUtil;
 import com.twx.test.util.MessageUtil;
 import org.junit.Test;
 
@@ -34,5 +35,20 @@ public class BigDecimalTest extends BaseTest {
     @Test
     public void test002() {
         MessageUtil.onTime(new BigDecimal("10").divide(new BigDecimal("3"), 8, RoundingMode.HALF_UP));
+    }
+
+    @Test
+    public void test003() {
+        BigDecimal left = BigDecimal.TEN;
+        BigDecimal right = left;
+        right = BigDecimalUtil.subtract(right, BigDecimal.ONE);
+        MessageUtil.onTime(left);
+        MessageUtil.onTime(right);
+    }
+
+    @Test
+    public void test004() {
+        MessageUtil.onTime(BigDecimal.ONE.divide(new BigDecimal(100), RoundingMode.HALF_UP));
+        MessageUtil.onTime(BigDecimal.ONE.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP));
     }
 }

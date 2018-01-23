@@ -69,7 +69,7 @@ public abstract class StringUtil {
      */
     public static String underline2camel(String underlineStr, boolean initialIsUpper) {
         if (isBlank(underlineStr) || !underlineStr.contains(UNDER_LINE)) {
-            return initialIsUpper ? underlineStr : initial2Lower(underlineStr);
+            return initialIsUpper ? initial2Upper(underlineStr) : initial2Lower(underlineStr);
         }
 
         String result = Stream.of(underlineStr.split(UNDER_LINE))
@@ -152,6 +152,90 @@ public abstract class StringUtil {
 
     public static String generateOrderNo(Long CustomerId, int num) {
         return Convert.toString(new Date(), "yyyyMMddHHmmss") + String.format("%02d", num) + String.format("%06d", CustomerId);
+    }
+
+    /**
+     * 从builder中把最后面的count个字符去掉
+     * @param builder
+     * @param count 截取的个数
+     * @return
+     */
+    public static String substring(StringBuilder builder, int count) {
+        if (builder.length() < count) {
+            return builder.toString();
+        }
+
+        return builder.substring(0, builder.length() - count);
+    }
+
+    /**
+     * 截取字符串
+     * @param str
+     * @param size 字符数
+     * @return
+     */
+    public static String truncate(String str, int size) {
+        if (isBlank(str) || str.getBytes(CharacterEncodings.CHARSET_UTF_8).length < size) {
+            return str;
+        }
+
+        return truncate(str.substring(0, str.length() - 1), size);
+    }
+
+    /**
+     * 截取字符串，按中文，一个中文算2个，非中文算一个
+     * @param str
+     * @param size 字符数
+     * @return
+     */
+    public static String truncateByUTF8(String str, int size) {
+        if (isEmpty(str) || size <= 0) {
+            return str;
+        }
+
+        byte[] bytes = str.getBytes(CharacterEncodings.CHARSET_UTF_8);
+
+        int length = 0, count = 0;
+        for (byte b : bytes) {
+            if ((b & (byte) 0xc0) == (byte) 0x80) { // 中间字符
+                length++;
+                continue;
+            }
+
+            if ((b & (byte) 0x80) == (byte) 0x00) { // ascii码
+                count++;
+            } else { // 其他字符算2个
+                count += 2;
+            }
+
+            if (count > size) {
+                break;
+            }
+
+            length++;
+        }
+
+        return new String(bytes, 0, length, CharacterEncodings.CHARSET_UTF_8);
+    }
+
+    public static String joinBySeparator(List<String> text, String regex) {
+        if (CollectionUtil.isEmpty(text)) {
+            return "";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (String str: text) {
+            if (isBlank(str)) {
+                continue;
+            }
+            builder.append(str);
+
+            if (!isEmpty(regex)) {
+                builder.append(regex);
+            }
+        }
+
+        return substring(builder, isEmpty(regex) ? 0 : regex.length());
     }
 
 }

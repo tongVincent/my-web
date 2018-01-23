@@ -105,4 +105,22 @@ public class GrammarTest extends BaseTest {
             }
         });
     }
+
+    @Test
+    public void test006() {
+        MessageUtil.onTime(1/3);
+        MessageUtil.onTime(2/3);
+        MessageUtil.onTime(-1/3);
+        MessageUtil.onTime(-2/3);
+        MessageUtil.onTime(-3/3);
+        MessageUtil.onTime(-4/3);
+        MessageUtil.onTime(-5/3);
+        MessageUtil.onTime(-6/3);
+        MessageUtil.onTime(-1%3);
+        MessageUtil.onTime(-2%3);
+        MessageUtil.onTime(-3%3);
+        MessageUtil.onTime(-4%3);
+        MessageUtil.onTime(-5%3);
+        MessageUtil.onTime(-6%3);
+    }
 }

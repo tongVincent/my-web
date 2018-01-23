@@ -1,3 +1,6 @@
+import com.twx.core.util.json.JSONBinder
+import com.twx.core.util.json.JsonUtil
+
 /**
  * Created by vincent.tong on 2016/11/23.
  */
@@ -91,14 +94,36 @@ try {
 }
 
 
-// 3、
+// 3、测试if的条件判断，跟js类似
 println "3、"
-
-
+def d = null
+if(d) {
+    println "is not Null"
+} else {
+    println "is Null"
+}
+d = ""
+if(d) {
+    println "is not Null"
+} else {
+    println "is Null"
+}
+d = []
+if(d) {
+    println "is not Null"
+} else {
+    println "is Null"
+}
+d.add(1)
+if(d) {
+    println "is not Null"
+} else {
+    println "is Null"
+}
 
 // 4、
 println "4、"
-
+println JSONBinder.binder(JsonUtil.class).toJson(null)
 
 
 // 5、

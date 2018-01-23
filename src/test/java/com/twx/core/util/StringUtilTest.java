@@ -4,6 +4,7 @@ import com.twx.test.util.MessageUtil;
 import junit.framework.TestCase;
 import org.junit.Assert;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -62,4 +63,31 @@ public class StringUtilTest extends TestCase {
         MessageUtil.onTime(StringUtil.generateOrderNo(123L, 123));
         MessageUtil.onTime(StringUtil.generateOrderNo(58888889L, 56));
     }
+
+    public void testTruncate() {
+        MessageUtil.onTime(StringUtil.truncate("asdasdfljsad;lfkjkssdsdfasdadl", 20));
+        MessageUtil.onTime(StringUtil.truncate("阿克苏l发动机克撒的了放假了可见", 20));
+        MessageUtil.onTime(StringUtil.truncate("阿克苏l发动机克撒的1333", 20));
+        MessageUtil.onTime(StringUtil.truncate("谁看懂了就", 20));
+        MessageUtil.onTime(StringUtil.truncate("撒看到了伐", 20));
+    }
+
+    public void testTruncateByUTF8() {
+        MessageUtil.onTime(StringUtil.truncateByUTF8("asdasdfljsad;lfkjkssdsdfasdadl", 20));
+        MessageUtil.onTime(StringUtil.truncateByUTF8("阿克苏l发动机克撒的了放假了可见", 20));
+        MessageUtil.onTime(StringUtil.truncateByUTF8("阿克苏l发动机克撒的1333", 20));
+        MessageUtil.onTime(StringUtil.truncateByUTF8("阿克苏l发动机克撒\uD842\uDFB7123", 20));
+        MessageUtil.onTime(StringUtil.truncateByUTF8("谁看懂了就", 20));
+        MessageUtil.onTime(StringUtil.truncateByUTF8("撒看到了伐", 20));
+        MessageUtil.onTime(StringUtil.truncateByUTF8("撒看到了伐", 20));
+    }
+
+    public void testJoinBySeparator() {
+        MessageUtil.onTime(StringUtil.joinBySeparator(Arrays.asList("dd", "aa"), "、"));
+        MessageUtil.onTime(StringUtil.joinBySeparator(Arrays.asList("dd", "aa"), ""));
+        MessageUtil.onTime(StringUtil.joinBySeparator(Arrays.asList("dd", "aa"), null));
+        MessageUtil.onTime(StringUtil.joinBySeparator(Arrays.asList(" ", " "), "、"));
+    }
+
+
 }
