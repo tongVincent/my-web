@@ -5,9 +5,14 @@
     <groupId>com.twx</groupId>
     <artifactId>web</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
-
+    <packaging>pom</packaging>
     <name>web</name>
+
+    <modules>
+        <module>core</module>
+        <module>test</module>
+        <module>vuejs</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,33 +27,12 @@
         <!-- 2.5.2不支持Java8，改用新版本 -->
         <plugin.findbugs.version>3.0.4</plugin.findbugs.version>
 
-        <!-- 当驱动与MySQL的版本不符合的时候会报如下错误：
-        MySQL server version for the right syntax to use near 'OPTION SQL_SELECT_LIMIT=DEFAULT' at line 1
-        故修改驱动版本 -->
-        <mysql.version>6.0.3</mysql.version>
-        <commons-dbcp.version>1.4</commons-dbcp.version>
-        <javax.servlet.version>3.1.0</javax.servlet.version>
-        <spring.version>4.1.5.RELEASE</spring.version>
-
-        <groovy.version>2.4.7</groovy.version>
-
-        <hsqldb.version>2.2.8</hsqldb.version>
-
-        <jackson.version>2.8.1</jackson.version>
-        <jackson.module.version>2.7.6</jackson.module.version>
-
-        <logback.version>1.1.7</logback.version>
-        <log4j.version>1.7.21</log4j.version>
-        <jdk.log.version>1.7.10</jdk.log.version>
-
         <plugin.jacoco.version>0.6.2.201302030002</plugin.jacoco.version>
 
-        <!-- CXF版本 -->
-        <cxf.version>3.1.10</cxf.version>
+        <spring.version>4.1.5.RELEASE</spring.version>
+        <hsqldb.version>2.2.8</hsqldb.version>
 
-        <!-- joda版本 -->
-        <joda.version>2.9.4</joda.version>
-
+        <build.base.path>.</build.base.path>
 
     </properties>
 
@@ -62,148 +46,6 @@
     </repositories>
 
     <dependencies>
-        <!-- 数据库连接 begin -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>${commons-dbcp.version}</version>
-        </dependency>
-        <!-- 数据库相关 end -->
-
-        <!-- hibernate相关 begin -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>4.1.7.Final</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>4.3.0.Final</version>
-        </dependency>
-        <!-- hibernate相关 end -->
-
-        <!-- spring begin -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <!-- spring end -->
-
-        <!-- freemarker begin -->
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>2.3.23</version>
-        </dependency>
-        <!-- freemarker end -->
-
-        <!-- 日志 下面的各种日志框架声明，会各自拉取需要的依赖 begin -->
-
-        <!-- logback日志 begin -->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
-        </dependency>
-        <!-- logback日志 end -->
-
-        <!-- log4j日志 begin -->
-        <!--
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-        -->
-        <!-- log4j日志 end -->
-
-        <!-- jdklog日志 begin -->
-        <!--
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-            <version>${jdk.log.version}</version>
-        </dependency>
-        -->
-        <!-- jdklog日志 end -->
-
-        <!-- 日志 end -->
-
-        <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>javax.el-api</artifactId>
-            <version>2.2.4</version>
-        </dependency>
-
-        <!-- 注释掉，用tomcat的servlet接口 -->
-        <!--
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.servlet</artifactId>
-            <version>3.1</version>
-            <scope>provided</scope>
-        </dependency>
-        -->
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${javax.servlet.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.3.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.8.0</version>
-        </dependency>
-
-        <!-- 添加Groovy的支持 -->
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>${groovy.version}</version>
-        </dependency>
-
         <!-- test jar start -->
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
@@ -263,77 +105,7 @@
         </dependency>
         <!-- test jar end -->
 
-        <!-- Gson的引用 begin -->
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.2.4</version>
-        </dependency>
-        <!-- Gson的引用 end -->
-
-        <!-- Jackson的引用 begin -->
-        <!-- 以下三个是基本包 -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <!-- 用来支撑jaxb注解 -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-jaxb-annotations</artifactId>
-            <version>${jackson.module.version}</version>
-        </dependency>
-        <!-- Jackson的引用 end -->
-
-        <!-- cglib的引用 begin -->
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>2.2.2</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- cglib的引用 end -->
-
-        <!-- CXF begin -->
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <version>${cxf.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http</artifactId>
-            <version>${cxf.version}</version>
-        </dependency>
-        <!-- 如果CXF不集成到Web服务器中，必须添加该引用 -->
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http-jetty</artifactId>
-            <version>${cxf.version}</version>
-        </dependency>
-        <!-- CXF end -->
-
-        <!-- joda 时间的计算 end -->
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>${joda.version}</version>
-        </dependency>
-        <!-- joda end -->
-
     </dependencies>
-
 
     <build>
         <finalName>${project.artifactId}</finalName>
@@ -376,9 +148,9 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>${plugin.checkstyle.version}</version>
                 <configuration>
-                    <configLocation>${project.basedir}/build/check-style.xml</configLocation>
+                    <configLocation>build/check-style.xml</configLocation>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    <suppressionsLocation>${project.basedir}/build/check-style-suppression.xml</suppressionsLocation>
+                    <suppressionsLocation>build/check-style-suppression.xml</suppressionsLocation>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
                 </configuration>
@@ -398,7 +170,7 @@
                 <version>${plugin.pmd.version}</version>
                 <configuration>
                     <rulesets>
-                        <ruleset>build/pmd.xml</ruleset>
+                        <ruleset>${build.base.path}/build/pmd.xml</ruleset>
                     </rulesets>
                     <targetJdk>${project.build.targetJDK}</targetJdk>
                     <verbose>true</verbose>
@@ -423,7 +195,7 @@
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>${plugin.findbugs.version}</version>
                 <configuration>
-                    <excludeFilterFile>build/find-bugs-exclude-filter.xml</excludeFilterFile>
+                    <excludeFilterFile>${build.base.path}/build/find-bugs-exclude-filter.xml</excludeFilterFile>
                 </configuration>
                 <executions>
                     <execution>
@@ -449,48 +221,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <packagingExcludes>
-                        **/node_modules/**,
-                        **/.sass-cache/**,
-                        **/sass/**,
-                        **/scss/**,
-                        **/.jshintrc,
-                        **/gulpfile.js,
-                        **/package.json,
-                        **/assets/css/**,
-                        **/assets/js/**,
-                        **/assets/img/**,
-                        **/assets/fonts/**
-                    </packagingExcludes>
-                    <useCache>true</useCache>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>exploded</goal>
-                        </goals>
-                        <configuration>
-                            <webResources>
-                                <resource>
-                                    <directory>src/main/webapp</directory>
-                                    <includes>
-                                        <include>**/*.css</include>
-                                        <include>**/*.js</include>
-                                    </includes>
-                                </resource>
-                            </webResources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
 
     </build>
@@ -510,7 +240,7 @@
                 <configuration>
                     <configLocation>build/check-style.xml</configLocation>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    <suppressionsLocation>${project.basedir}/build/check-style-suppression.xml
+                    <suppressionsLocation>build/check-style-suppression.xml
                     </suppressionsLocation>
                 </configuration>
                 <reportSets>
@@ -528,7 +258,7 @@
                 <version>${plugin.pmd.version}</version>
                 <configuration>
                     <rulesets>
-                        <ruleset>build/pmd.xml</ruleset>
+                        <ruleset>${build.base.path}/build/pmd.xml</ruleset>
                     </rulesets>
                     <targetJdk>${project.build.targetJDK}</targetJdk>
                     <verbose>true</verbose>
@@ -540,7 +270,7 @@
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>${plugin.findbugs.version}</version>
                 <configuration>
-                    <excludeFilterFile>build/find-bugs-exclude-filter.xml</excludeFilterFile>
+                    <excludeFilterFile>${build.base.path}/build/find-bugs-exclude-filter.xml</excludeFilterFile>
                 </configuration>
             </plugin>
 

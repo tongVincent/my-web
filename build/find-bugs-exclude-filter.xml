@@ -10,6 +10,11 @@
         <Class name="com.twx.test.other.StaticInitOrderTest"/>
     </Match>
 
+    <Match>
+        <Class name="com.twx.core.util.json.JSONDateFormat"/>
+        <Method name="clone"/>
+    </Match>
+
     <!-- 下面是各种范例 -->
 
     <!-- android-support-v4.jar：包过滤
