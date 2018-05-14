@@ -1,6 +1,6 @@
 package com.twx;
 
-import com.twx.test.util.MessageUtil;
+import com.twx.core.util.MessageUtil;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -26,7 +26,7 @@ public class ClassLoadTest extends BaseTest {
         File[] dirs;
         if (s != null) {
             StringTokenizer st =
-                new StringTokenizer(s, File.pathSeparator);
+                    new StringTokenizer(s, File.pathSeparator);
             int count = st.countTokens();
             dirs = new File[count];
             for (int i = 0; i < count; i++) {
@@ -44,6 +44,7 @@ public class ClassLoadTest extends BaseTest {
 
     /**
      * 测试java.lang.Class#getClassLoader返回的加载器，返回的是定义加载器。
+     *
      * @throws ClassNotFoundException
      */
     @Test
@@ -93,6 +94,6 @@ class FileSystemClassLoader extends ClassLoader {
 
     private String classNameToPath(String className) {
         return rootDir + File.separatorChar
-            + className.replace('.', File.separatorChar) + ".class";
+                + className.replace('.', File.separatorChar) + ".class";
     }
 }

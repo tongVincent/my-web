@@ -1,9 +1,10 @@
 package com.twx;
 
-import com.twx.test.util.MessageUtil;
+import com.twx.core.util.MessageUtil;
 import org.junit.Test;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -45,6 +46,7 @@ public class UrlTest extends BaseTest {
 
     @Test
     public void test003() throws Exception {
+        thrown.expect(URISyntaxException.class);
         new URI("//foo:bar").parseServerAuthority();
     }
 

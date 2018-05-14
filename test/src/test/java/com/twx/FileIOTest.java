@@ -1,7 +1,7 @@
 package com.twx;
 
 import com.twx.core.util.FileUtil;
-import com.twx.test.util.MessageUtil;
+import com.twx.core.util.MessageUtil;
 import org.junit.Test;
 
 import java.io.File;
@@ -56,9 +56,9 @@ public class FileIOTest extends BaseTest {
                     Optional<String> childPath = Optional.empty();
                     try {
                         childPath = Files.list(path)
-                            .filter(Files::isDirectory)
-                            .filter(p -> p.getFileName().toString().contains("interface"))
-                            .map(p -> p.getFileName().toString()).findFirst();
+                                .filter(Files::isDirectory)
+                                .filter(p -> p.getFileName().toString().contains("interface"))
+                                .map(p -> p.getFileName().toString()).findFirst();
                     } catch (IOException ignored) {
 
                     }
@@ -70,6 +70,7 @@ public class FileIOTest extends BaseTest {
 
     /**
      * 文件获取最后修改时间，是时时的，程序运行间文件修改了，则最后修改时间也变了
+     *
      * @throws IOException
      */
     @Test
