@@ -1,8 +1,10 @@
 package com.twx;
 
 import com.twx.core.util.FileUtil;
+import com.twx.test.util.MessageUtil;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -54,9 +56,9 @@ public class FileIOTest extends BaseTest {
                     Optional<String> childPath = Optional.empty();
                     try {
                         childPath = Files.list(path)
-                                .filter(Files::isDirectory)
-                                .filter(p -> p.getFileName().toString().contains("interface"))
-                                .map(p -> p.getFileName().toString()).findFirst();
+                            .filter(Files::isDirectory)
+                            .filter(p -> p.getFileName().toString().contains("interface"))
+                            .map(p -> p.getFileName().toString()).findFirst();
                     } catch (IOException ignored) {
 
                     }
@@ -64,5 +66,21 @@ public class FileIOTest extends BaseTest {
                     return childPath.isPresent() ? parentName + '/' + childPath.get() : parentName;
                 })
                 .forEach(pathName -> System.out.println("cd " + pathName + "\n" + "mvn clean install\ncd ..\ncd ..\n"));
+    }
+
+    /**
+     * 文件获取最后修改时间，是时时的，程序运行间文件修改了，则最后修改时间也变了
+     * @throws IOException
+     */
+    @Test
+    public void test004() throws IOException {
+        String fileName = "E:\\twx\\工作记录\\备份.txt";
+        if (!FileUtil.exists(fileName)) {
+            return;
+        }
+
+        File file = new File(fileName);
+        MessageUtil.onTime(file.lastModified());
+        MessageUtil.onTime(file.lastModified());
     }
 }
