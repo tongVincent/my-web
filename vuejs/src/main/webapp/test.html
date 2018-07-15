@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<script src="lib/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<p v-COlor="'pink'">测试</p>
+			
+			<template  slot="header">
+				<h1>测试啦时</h1>
+			</template>
+		</div>
+		
+		<script>
+			Vue.directive("focus", { // 下面的函数中，第一个参数永远是 el ，表示被绑定了指令的那个元素，这个el参数，是一个原生的JS对象
+				bind: function(el) { // 每当指令绑定到元素上的时候，会立即执行这个函数，只执行一次
+					// 样式相关的可以在这里设置
+				},
+				inserted: function(el, binding) { // 表示元素插入到DOM中的时候，会执行此函数，只触发一次
+					el.focus(); // 和JS行为相关的，在这里执行
+				},
+				updated: function(el) { // 当VNode更新的时候，会执行这个函数，可以触发多次
+				}
+			});
+			
+			var vm = new Vue({
+				el: '#app',
+				data: {},
+				directives: {
+					'color': {
+						bind(el, binding) {
+							el.style.color = binding.value;
+						}
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,78 @@
+<html>
+	<head>
+		<script src="lib/vue.js"></script>
+		
+		<style>
+			.ball {
+				width: 15px;
+				height: 15px;
+				border-radius: 50%;
+				background-color: red;
+			}
+			
+			.v2-enter-to {
+				transform: translate(150px, 450px);
+				transition: all 1s ease
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<input type="button" value="快到碗里来" @click="flag=!flag">
+			<transition
+				@before-enter="beforeEnter"
+				@enter="enter"
+				@after-enter="afterEnter">
+				<div class="ball" v-show="flag"></div>
+			</transition>
+		</div>
+		
+		<!-- 下面是用css来实现的动画，与上面不同的是，一个是js控制，一个是css控制。对于半场的动画，最好用js来实现。
+			这2中方式还是有差别：连击的时候的效果不同。请自己试验。
+		-->
+		<div id="app2">
+			<input type="button" value="快到碗里来" @click="flag=!flag">
+			<transition name="v2"
+				@after-enter="afterEnter">
+				<div class="ball" v-show="flag"></div>
+			</transition>
+		</div>
+		
+		<script>
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					flag: false
+				},
+				methods: {
+					beforeEnter(el) {
+						el.style.transform = "translate(0, 0)"
+					},
+					enter(el,  done) {
+						el.offsetWidth; // 这个还是要写的，用来表示需要刷新，这样才会有过渡效果，去掉就没有了。还有用offsetTop等
+						el.style.transform = "translate(150px, 450px)"
+						el.style.transition = "all 1s ease"
+						done()
+					},
+					afterEnter(el) {
+						this.flag = !this.flag;
+					}
+				}
+				
+			});
+			
+			new Vue({
+				el: '#app2',
+				data: {
+					flag: false
+				},
+				methods: {
+					afterEnter(el) {
+						this.flag = !this.flag;
+					}
+				}
+				
+			});
+		</script>
+	</body>
+</html>

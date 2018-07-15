@@ -1,0 +1,139 @@
+<html>
+	<head>
+		<script src="lib/vue.js"></script>
+	</head>
+	<body>
+	<!-- 测试：外层用.capture，而里层有2层以上，那里层的事件是冒泡还是捕获？ 
+	从app1, app2, app3的测试结果可以得出结论：
+	.capture 修饰的元素具有事件优先处理权利，如果的有多个用.capture修饰的元素，则它们的处理顺序为从外到里。
+	.capture修饰的元素的事件处理完后，就接着按冒泡的模式处理事件的传播。
+	冒泡的时候，如果传到.capture修饰的元素则跳过去，继续向外传播。
+	-->
+		<div id="app1">
+			<div class="outer" @click.capture="outerDivHandler">
+				<div class="inner" @click="innerDivHandler">
+					<input type="button" value="按钮" @click="btnHandler">
+				</div>
+			</div>
+		</div>
+		
+		<div id="app2">
+			<div class="outer" @click="outerDivHandler">
+				<div class="inner" @click.capture="innerDivHandler">
+					<input type="button" value="按钮" @click="btnHandler">
+				</div>
+			</div>
+		</div>
+		
+		<div id="app3">
+			<div class="outer" @click.capture="outerDivHandler">
+				<div class="inner" @click.capture="innerDivHandler">
+					<input type="button" value="按钮" @click="btnHandler">
+				</div>
+			</div>
+		</div>
+		
+		<div id="app4">
+			<div class="outer" @click.capture="outerDivHandler">
+				<div class="inner" @click.capture.stop.once="innerDivHandler">
+					<input type="button" value="按钮" @click.stop="btnHandler">
+				</div>
+			</div>
+			
+			<a href="http://www.baidu.com" @click.prevent.once="linkClick">百度</a>
+		</div>
+		
+		<div id="app5">
+			.self.prevent 表示只自身的点击阻止默认行为，.prevent.self 表示所有的点击（包括子元素的点击）的默认行为都阻止。
+			<br>
+			<a href="http://www.baidu.com" @click.self.prevent="linkClick">百度 <span>只阻止 自身点击的默认行为</span></a>
+			<br>
+			<a href="http://www.baidu.com" @click.prevent.self="linkClick">百度 <span>阻止 所有点击的默认行为</span></a>
+		</div>
+		
+		<div id="app6">
+			.self.stop是自身的点击才会阻止冒泡， .stop.self阻止所有的点击冒泡
+			<div class="outer" @click="outerDivHandler" style="background: blue;width: 90px;">
+				.self.stop
+				<div class="inner" @click.self.stop="innerDivHandler" style="background: red;width: 60px;">
+					<input type="button" value="按钮" @click="btnHandler">
+				</div>
+			</div>
+			
+			<div class="outer" @click="outerDivHandler" style="background: blue;width: 90px;">
+				.stop.self
+				<div class="inner" @click.stop.self="innerDivHandler" style="background: red;width: 60px;">
+					<input type="button" value="按钮" @click="btnHandler">
+				</div>
+			</div>
+		</div>
+		
+		<div id="app7">
+			.self.capture, .capture.self这2种情况都一样，只有自身的点击才捕获，其实这样捕获就没有意义了。所以.self不要与.capture联用。
+			<div class="outer" @click="outerDivHandler" style="background: blue;width: 90px;">
+				.self.capture
+				<div class="inner" @click.self.capture="innerDivHandler" style="background: red;width: 60px;">
+					<input type="button" value="按钮" @click="btnHandler">
+				</div>
+			</div>
+			
+			<div class="outer" @click="outerDivHandler" style="background: blue;width: 90px;">
+				.capture.self
+				<div class="inner" @click.capture.self="innerDivHandler" style="background: red;width: 60px;">
+					<input type="button" value="按钮" @click="btnHandler">
+				</div>
+			</div>
+		</div>
+		<script>
+			var methods = {
+				innerDivHandler() {
+					console.log("inner div");
+				},
+				btnHandler()  {
+					console.log("btn div");
+				},
+				outerDivHandler() {
+					console.log("outer div");
+				},
+				linkClick() {
+					console.log("link click");
+				}
+			};
+			new Vue({
+				el: '#app1',
+				data: {},
+				methods: methods
+			});
+			new Vue({
+				el: '#app2',
+				data: {},
+				methods: methods
+			});
+			new Vue({
+				el: '#app3',
+				data: {},
+				methods: methods
+			});
+			new Vue({
+				el: '#app4',
+				data: {},
+				methods: methods
+			});
+			new Vue({
+				el: '#app5',
+				data: {},
+				methods: methods
+			});
+			new Vue({
+				el: '#app6',
+				data: {},
+				methods: methods
+			});
+			new Vue({
+				el: '#app7',
+				data: {},
+				methods: methods
+			});
+		</script>
+	</body>
+</html>
