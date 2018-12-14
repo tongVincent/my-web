@@ -1,5 +1,6 @@
-package com.twx;
+package com.twx.java.lang;
 
+import com.twx.BaseTest;
 import com.twx.core.util.MessageUtil;
 import org.junit.Test;
 
@@ -50,9 +51,9 @@ public class ClassLoadTest extends BaseTest {
     @Test
     public void test002() throws ClassNotFoundException {
         FileSystemClassLoader loader = new FileSystemClassLoader("");
-        Class<?> clz = loader.loadClass("com.twx.ClassTest");
+        Class<?> clz = loader.loadClass("com.twx.java.lang.ClassTest");
         MessageUtil.onTime(clz.getClassLoader());
-        clz = loader.loadClass("com.twx.ClassTest");
+        clz = loader.loadClass("com.twx.java.lang.ClassTest");
         MessageUtil.onTime(clz.getClassLoader());
     }
 }

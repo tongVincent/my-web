@@ -1,0 +1,20 @@
+<html>
+	<head>
+		<script src="lib/jquery-3.3.1.js"></script>
+		<script src="lib/public.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			下面是iframe：
+			<iframe id="iframe1" name="iframe1" src="iframe1.html" ></iframe>
+		</div>
+		
+		<script>
+			setTimeout(function() {
+				console.log("iframe的个数" + frames.length);
+				console.log("iframe的内容" + frames["iframe1"].document.body.innerHTML);
+			}, 1000);
+			
+		</script>
+	</body>
+</html>

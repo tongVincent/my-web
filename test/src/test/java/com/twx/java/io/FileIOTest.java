@@ -1,5 +1,6 @@
-package com.twx;
+package com.twx.java.io;
 
+import com.twx.BaseTest;
 import com.twx.core.util.FileUtil;
 import com.twx.core.util.MessageUtil;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class FileIOTest extends BaseTest {
     @Test
     public void test001() throws IOException {
         String directory = "D:\\fuzhou";
-        if (!FileUtil.exists(directory)) {
+        if (FileUtil.isNotExists(directory)) {
             return;
         }
 
@@ -33,7 +34,7 @@ public class FileIOTest extends BaseTest {
     @Test
     public void test002() throws IOException {
         String directory = "D:\\sgcloud";
-        if (!FileUtil.exists(directory)) {
+        if (FileUtil.isNotExists(directory)) {
             return;
         }
 
@@ -46,7 +47,7 @@ public class FileIOTest extends BaseTest {
     @Test
     public void test003() throws IOException {
         String directory = "E:\\twx\\code\\elink";
-        if (!FileUtil.exists(directory)) {
+        if (FileUtil.isNotExists(directory)) {
             return;
         }
 
@@ -76,7 +77,7 @@ public class FileIOTest extends BaseTest {
     @Test
     public void test004() throws IOException {
         String fileName = "E:\\twx\\工作记录\\备份.txt";
-        if (!FileUtil.exists(fileName)) {
+        if (FileUtil.isNotExists(fileName)) {
             return;
         }
 
@@ -84,4 +85,17 @@ public class FileIOTest extends BaseTest {
         MessageUtil.onTime(file.lastModified());
         MessageUtil.onTime(file.lastModified());
     }
+
+    /**
+     * 文件路径如果是相对路径的时候，是相对System.getProperty("user.dir")。
+     */
+    @Test
+    public void test005() {
+        String fileName = "pom.xml";
+        File file = new File(fileName);
+        MessageUtil.onTime("是否存在" + file.exists());
+        MessageUtil.onTime(file.getParent());
+        MessageUtil.onTime(file.getAbsolutePath());
+    }
+
 }

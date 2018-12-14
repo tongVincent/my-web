@@ -1,5 +1,6 @@
-package com.twx;
+package com.twx.java.util;
 
+import com.twx.BaseTest;
 import com.twx.core.util.MessageUtil;
 import org.junit.Test;
 
